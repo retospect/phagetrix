@@ -7,7 +7,7 @@ name = "phagetrix"
 authors = ["Reto Stamm"]
 description = "Optimizer for degenerate codon use in phage library generation"
 readme = "README.md"
-version = "0.0.1"
+version = "0.0.2"
 keywords = ["example"]
 license = "GPL-3"
 classifiers = [ "Programming Language :: Python :: 3", ]
@@ -17,7 +17,7 @@ homepage="https://github.com/retospect/phagetrix"
 phagetrix= "phagetrix.exec:main"
 
 [tool.bumpver]
-current_version = "0.0.1"
+current_version = "0.0.2"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message = "bump version {old_version} -> {new_version}"
 commit = true
