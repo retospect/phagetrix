@@ -13,6 +13,9 @@ license = "GPL-3"
 classifiers = [ "Programming Language :: Python :: 3", ]
 homepage="https://github.com/retospect/phagetrix"
 
+[tool.poetry.dependencies]
+python_codon_tables = "*"
+
 [tool.poetry.scripts]
 phagetrix= "phagetrix.exec:main"
 
