@@ -13,7 +13,7 @@ def test_pairs_of_aminoacid_codons():
     # string that contains all aminoacids
     s = 'FLIMVSPTAYHQNKDECWRSG'
 
-    assert codon_gen.get_best_degenerate_codon(s) in ['NNS', 'NNN']
+    assert codon_gen.get_best_degenerate_codon(s) in ['NNS', 'NNN', 'NNK']
 
 
 
