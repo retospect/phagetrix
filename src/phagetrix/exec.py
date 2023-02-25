@@ -23,25 +23,7 @@ Y4YPFYA
 A7AVILM
 """
 
-
-def main():
-    parser = argparse.ArgumentParser(description="PhageTrix", formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.description = "PhageTrix"
-    parser.long_description = "Generate degenerate primers for phage display libraries"
-    parser.epilog = epilog
-    parser.version = "0.1.2"
-    parser.add_argument("input", type=argparse.FileType('r'), metavar='INPUT_FILE', help="Input file")
-    parser.add_argument("-c", "--company", help="Sequence company", default="IDT") # options=trix.degenerate.keys()
-
-    args = parser.parse_args()
-
-    infile = args.input
-    degen_dict = trix.degenerate[args.company]
-
-    # Read in the input file
-    lines = infile.readlines()
-    infile.close()
-
+def process_request(lines, degen_dict):
     # Get the sequence
     seq = lines[0].strip()
 
@@ -104,4 +86,24 @@ def main():
     print("".join(codons))
 
         
+
+def main():
+    parser = argparse.ArgumentParser(description="PhageTrix", formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.description = "PhageTrix"
+    parser.long_description = "Generate degenerate primers for phage display libraries"
+    parser.epilog = epilog
+    parser.version = "0.1.2"
+    parser.add_argument("input", type=argparse.FileType('r'), metavar='INPUT_FILE', help="Input file")
+    parser.add_argument("-c", "--company", help="Sequence company", default="IDT") # options=trix.degenerate.keys()
+
+    args = parser.parse_args()
+
+    infile = args.input
+    degen_dict = trix.degenerate[args.company]
+
+    # Read in the input file
+    lines = infile.readlines()
+    infile.close()
+
+    process_request(lines, degen_dict)
 
