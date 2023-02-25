@@ -9,7 +9,21 @@ https://doi.org/10.5281/zenodo.7676572)
 https://github.com/retospect/phagetrix/actions/workflows/check.yml/badge.svg)](
 https://github.com/retospect/phageterix/actions/workflows/check.yml)
 
-A codon optimizer for phage display library generation.
+A codon optimizer for i[phage display libraray](
+https://bio.libretexts.org/Bookshelves/Biochemistry/Supplemental_Modules_(Biochemistry)/4._Biotechnology_2/4.3%3A_M13_Phage_Display_Libraries)
+generation.
+
+When making phage display libraries, it's easy to run out of permutations. 1 liter of phage solution can hold about
+$10^{12}$ different sequences. 
+We can approximate how many combinations we generate with $nr\ of\ choicse^{nr\ of\ positions}$.
+If we change 10 aminoacids to "any" aminoacid, we can change about 9 AA's: $20^9 \approx 10^{12}$
+permutations.
+If we use the degenerate codon capabilities of the manufactureres such as
+[IDT](https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-that-you-use-(eg.-r-w-k-v-s)-)
+to the fullest, we can probably make combinations that are partially rational, and allow for 7 permutations in any
+postion.
+That allows us to check out many more combinations that are likely to work: $6^{15} \approx 10^{12}$, so about 15
+variable AA's instead of 7. That's twice as many!
 
 ## Example
 
