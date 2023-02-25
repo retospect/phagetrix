@@ -1,12 +1,12 @@
 # Phagetrix
 
 [![Open in Google Colab](
-https://colab.research.google.com/assets/colab-badge.png)](
+https://colab.research.google.com/assets/colab-badge.svg)](
 https://colab.research.google.com/github/retospect/phagetrix/blob/main/phagetrix.ipynb)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7676572.png)](
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7676572.svg)](
 https://doi.org/10.5281/zenodo.7676572)
-[![PyPI version](https://badge.fury.io/py/phagetrix.png)](https://badge.fury.io/py/phagetrix)
-[![Action Status](https://github.com/retospect/phagetrix/actions/workflows/check.yml/badge.png)](https://github.com/retospect/phagetrix/actions/workflows/check.yml)
+[![PyPI version](https://badge.fury.io/py/phagetrix.svg)](https://badge.fury.io/py/phagetrix)
+[![Action Status](https://github.com/retospect/phagetrix/actions/workflows/check.yml/badge.svg)](https://github.com/retospect/phagetrix/actions/workflows/check.yml)
 
 A codon optimizer for [phage display library](
 https://bio.libretexts.org/Bookshelves/Biochemistry/Supplemental_Modules_(Biochemistry)/4._Biotechnology_2/4.3%3A_M13_Phage_Display_Libraries)
