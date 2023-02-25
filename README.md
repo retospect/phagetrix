@@ -43,7 +43,7 @@ Each following line is the AA to be changed,
 the digits indicating its position,
 and the AA options that should be generated for that position.
 The AA options are concatenated together with no spaces.
-Phagerix will generate the best degenerate codon for each position.
+Phagetrix will generate the best degenerate codon for each position.
 
 Example:
 
