@@ -52,9 +52,9 @@ By default this uses the degenerate codons from
 [IDT](
 https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-that-you-use-(eg.-r-w-k-v-s)-)
 
-## Try before buy
+## Try it
 
-Try in Google Colab for free right now:
 [![Open in Google Colab](
 https://colab.research.google.com/assets/colab-badge.svg)](
 https://colab.research.google.com/github/retospect/phagetrix/blob/main/phagetrix.ipynb)
+
