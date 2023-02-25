@@ -5,6 +5,7 @@ https://colab.research.google.com/assets/colab-badge.svg)](
 https://colab.research.google.com/github/retospect/phagetrix/blob/main/phagetrix.ipynb)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7676572.svg)](
 https://doi.org/10.5281/zenodo.7676572)
+[![PyPI version](https://badge.fury.io/py/phagetrix.svg)](https://badge.fury.io/py/phagetrix)
 [![Action status](
 https://github.com/retospect/phagetrix/actions/workflows/check.yml/badge.svg)](
 https://github.com/retospect/phageterix/actions/workflows/check.yml)
@@ -72,9 +73,9 @@ By default this uses the degenerate codons from
 [IDT](
 https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-that-you-use-(eg.-r-w-k-v-s)-).
 
-## Try it
+# Try it
 
-[![Open in Google Colab](
+- [![Open in Google Colab](
 https://colab.research.google.com/assets/colab-badge.svg)](
 https://colab.research.google.com/github/retospect/phagetrix/blob/main/phagetrix.ipynb)
-
+- Install it on your machine ```pip install phagetrix``` to get the phagetrix command line tool. Requires python3.
