@@ -123,13 +123,13 @@ class DegenerateCodonGenerator:
     def get_best_degenerate_codon(self, amino_acids):
         # Returns the best degenerate codon for a given list of amino acids
         # The best degenerate codon is the one that codes for all the
-        # amino acids in the list and the fewest other amino acids
-        # If there is a tie, the one with the fewest permutations is chosen
-        # If there is still a tie, the one with the highest frequency is chosen
+        # amino acids in the list and the fewest other amino acids.
+        # If there is a tie, the one with the fewest permutations is chosen.
+        # If there is still a tie, the one with the highest frequency is chosen.
 
         # For each aminoacid in the list, get the set of degenerate codons that
         # code for it and OR the sets together to find the set of degenerate
-        # codons that code for all the amino acids in the list
+        # codons that code for all the amino acids in the list.
         degenerate_codons = set(self.degenerate_codons.keys())
         for aa in amino_acids:
             degenerate_codons = degenerate_codons & self.amino_acid_dict[aa]
