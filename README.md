@@ -70,7 +70,7 @@ GTTCTTBHCBHWATGGTTDYRCAGGTTCAG
 
 By default this uses the degenerate codons from
 [IDT](
-https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-that-you-use-(eg.-r-w-k-v-s)-)
+https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-that-you-use-(eg.-r-w-k-v-s)-).
 
 ## Try it
 
