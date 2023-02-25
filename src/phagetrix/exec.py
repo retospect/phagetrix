@@ -92,7 +92,7 @@ def main():
     parser.description = "PhageTrix"
     parser.long_description = "Generate degenerate primers for phage display libraries"
     parser.epilog = epilog
-    parser.version = "0.1.2"
+    parser.version = "0.1.3"
     parser.add_argument("input", type=argparse.FileType('r'), metavar='INPUT_FILE', help="Input file")
     parser.add_argument("-c", "--company", help="Sequence company", default="IDT") # options=trix.degenerate.keys()
 
