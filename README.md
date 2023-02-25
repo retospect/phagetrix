@@ -26,7 +26,8 @@ Example:
 ```VLPYMVAQVQ
 P3PFYA
 Y4YPFYE
-A7AVILM```
+A7AVILM
+```
 
 1. The first line is the sequence you want to alter.
 2. The P in position 3 should be either a P, F, Y or an A
@@ -38,7 +39,8 @@ Output:
    V   L   P   Y   M   V   A   Q   V   Q
  GTT CTT BHC BHW ATG GTT DYR CAG GTT CAG
 
-GTTCTTBHCBHWATGGTTDYRCAGGTTCAG```
+GTTCTTBHCBHWATGGTTDYRCAGGTTCAG
+```
 
 
 ## Try before buy
