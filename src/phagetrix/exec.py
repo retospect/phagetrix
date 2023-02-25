@@ -19,7 +19,7 @@ Phagerix will generate the best degenerate codon for each position.
 Example:
 VLPYMVAQVQ
 P3PFYA
-Y4YPFYA
+Y4YPFYE
 A7AVILM
 
 Cite https://doi.org/10.5281/zenodo.7676572
