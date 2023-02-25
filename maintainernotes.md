@@ -8,8 +8,6 @@ bumpver update --patch
 poetry publish --build --username $PYPI_USERNAME --password $PYPI_PASSWORD
 ```
 
-gpg sign soon!
-
 ## test:
 ```
 pip uninstall -y phagetrix

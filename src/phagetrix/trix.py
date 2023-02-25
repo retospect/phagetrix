@@ -5,13 +5,30 @@ import python_codon_tables as pct
 
 # Source: https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-that-you-use-(eg.-r-w-k-v-s)-
 # Retrieved 2023-FEB-23
-degenerate_IDT =  {'R': 'AG', 'Y':'CT', 'M':'AC', 'K':'GT', 'S':'CG', 'W': 'AT', 
-                   'H': 'ACT', 'B': 'CGT', 'V':'ACG', 'D': 'AGT', 'N':'ACGT'}
+degenerate = {
+    'IDT': 
+        {'R': 'AG', 'Y':'CT', 'M':'AC', 'K':'GT', 'S':'CG', 'W': 'AT', 
+         'H': 'ACT', 'B': 'CGT', 'V':'ACG', 'D': 'AGT', 'N':'ACGT'},
+
+# Source: https://www.eurofinsgenomics..com/en/products/dnarna-sythesis/degenerate-bases
+# Retrieved 2023-FEB-24
+    'Eurofins':
+        {'R': 'AG', 'Y':'CT', 'M':'AC', 'K':'GT', 'S':'CG', 'W': 'AT',
+         'B': 'CGT', 'D': 'AGT', 'H': 'ACT', 'V':'ACG', 'N':'ACGT'},
+
+# Source: https://www.neb.com/tools-and-resources/usage-guidelines/single-letter-codes
+# Retrieved 2023-FEB-24
+    'NEB':
+        {'B': 'CGT', 'D': 'AGT', 'H': 'ACT', 'K':'GT', 'M':'AC', 'N':'ACGT',
+         'R': 'AG', 'S':'CG', 'V':'ACG', 'W': 'AT', 'Y':'CT'}
+}
+
+# TODO: look up UIPAC code for degenerate bases and add it here:
 
 class DegenerateCodonGenerator:
     # Maintains a list of all the degenerate codons and their associated amino acids
     # Can find the best degenerate codon for a given list of aminoacids
-    def __init__(self, degenerate_bases=degenerate_IDT, codon_frequency=pct.get_codons_table("e_coli")):
+    def __init__(self, degenerate_bases=degenerate['IDT'], codon_frequency=pct.get_codons_table("e_coli")):
         self.degenerate_bases = degenerate_bases
         self.codon_frequency = codon_frequency
 

@@ -7,4 +7,4 @@ def test_commandline_installed():
     out, _ = p.communicate()
     niceout = out.decode("utf-8")
     print(niceout)
-    assert "Do the thing" in niceout
+    assert "following arguments" in niceout
