@@ -23,7 +23,8 @@ The AA options are concatenated together with no spaces.
 Phagerix will generate the best degenerate codon for each position.
 
 Example:
-```VLPYMVAQVQ
+```
+VLPYMVAQVQ
 P3PFYA
 Y4YPFYE
 A7AVILM
@@ -35,7 +36,8 @@ A7AVILM
 4. The A in position 7 should be either an A, V, I, L or an M
 
 Output:
-```   1   2   3   4   5   6   7   8   9  10
+```
+   1   2   3   4   5   6   7   8   9  10
    V   L   P   Y   M   V   A   Q   V   Q
  GTT CTT BHC BHW ATG GTT DYR CAG GTT CAG
 
