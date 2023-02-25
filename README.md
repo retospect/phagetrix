@@ -22,11 +22,14 @@ permutations.
 
 If we use the degenerate codon capabilities of the manufactureres such as
 [IDT](https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-that-you-use-(eg.-r-w-k-v-s)-)
-to the fullest, we can probably make combinations that are partially rational, and allow for 7 permutations in any
+to the fullest, we can probably make combinations that are partially rational, and allow for 6 permutations in any
 postion.
 
 That allows us to check out many more combinations that are likely to work: $6^{15} \approx 10^{12}$, so about 15
-variable AA's instead of 7. That's twice as many!
+variable AA's instead of 9.
+
+This tool allows you to easily specify what AA permutations you want, in which position, and calculates the best
+sequence of degenerate codons.
 
 ## Example
 
