@@ -9,7 +9,7 @@ https://doi.org/10.5281/zenodo.7676572)
 https://github.com/retospect/phagetrix/actions/workflows/check.yml/badge.svg)](
 https://github.com/retospect/phageterix/actions/workflows/check.yml)
 
-A codon optimizer for i[phage display libraray](
+A codon optimizer for [phage display library](
 https://bio.libretexts.org/Bookshelves/Biochemistry/Supplemental_Modules_(Biochemistry)/4._Biotechnology_2/4.3%3A_M13_Phage_Display_Libraries)
 generation.
 
