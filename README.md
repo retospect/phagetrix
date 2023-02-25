@@ -5,5 +5,7 @@
 
 A codon optimizer for phage display library generation.
 
-# Try before buy
+## Try before buy
 
+Try in Google Colab for free right now: 
+[![Open in Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/retospect/phagetrix/blob/main/phagetrix.ipynb)
