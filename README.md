@@ -6,9 +6,7 @@ https://colab.research.google.com/github/retospect/phagetrix/blob/main/phagetrix
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7676572.svg)](
 https://doi.org/10.5281/zenodo.7676572)
 [![PyPI version](https://badge.fury.io/py/phagetrix.svg)](https://badge.fury.io/py/phagetrix)
-[![Action status](
-https://github.com/retospect/phagetrix/actions/workflows/check.yml/badge.svg)](
-https://github.com/retospect/phageterix/actions/workflows/check.yml)
+[![Action Status](https://github.com/retospect/phagetrix/actions/workflows/check.yml/badge.svg)](https://github.com/retospect/phagetrix/actions/workflows/check.yml)
 
 A codon optimizer for [phage display library](
 https://bio.libretexts.org/Bookshelves/Biochemistry/Supplemental_Modules_(Biochemistry)/4._Biotechnology_2/4.3%3A_M13_Phage_Display_Libraries)
