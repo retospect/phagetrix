@@ -21,6 +21,8 @@ VLPYMVAQVQ
 P3PFYA
 Y4YPFYA
 A7AVILM
+
+Cite https://doi.org/10.5281/zenodo.7676572
 """
 
 def process_request(lines, degen_dict):
