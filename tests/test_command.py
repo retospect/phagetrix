@@ -1,6 +1,4 @@
 from subprocess import Popen, PIPE, STDOUT
-import sys
-
 
 def test_commandline_installed():
     p = Popen(["phagetrix"], stdout=PIPE, stderr=STDOUT)

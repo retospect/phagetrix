@@ -54,7 +54,8 @@ def process_request(lines, degen_dict):
         # Ensure that the aminoacid in the sequence is the same as the one in the line
         # and provide a good error message if it isn't
         if seq[position-1] != originalAA:
-            raise Exception("Amino acid in sequence at position %d is %s, not %s" % (position, seq[position-1], originalAA))
+            raise Exception("Amino acid in sequence at position %d is %s, not %s" \
+                            % (position, seq[position-1], originalAA))
 
         # Check that all the amino acids in the list are valid
         for aa in aas:
@@ -90,13 +91,15 @@ def process_request(lines, degen_dict):
         
 
 def main():
-    parser = argparse.ArgumentParser(description="PhageTrix", formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(description="PhageTrix", 
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.description = "PhageTrix"
     parser.long_description = "Generate degenerate primers for phage display libraries"
     parser.epilog = epilog
     parser.version = "0.1.7"
-    parser.add_argument("input", type=argparse.FileType('r'), metavar='INPUT_FILE', help="Input file")
-    parser.add_argument("-c", "--company", help="Sequence company", default="IDT") # options=trix.degenerate.keys()
+    parser.add_argument("input", type=argparse.FileType('r'), metavar='INPUT_FILE',
+                        help="Input file")
+    parser.add_argument("-c", "--company", help="Sequence company", default="IDT") 
 
     args = parser.parse_args()
 
