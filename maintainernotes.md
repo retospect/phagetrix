@@ -16,4 +16,6 @@ python -m pip cache purge
 pip install phagetrix
 
 pip install --force-reinstall dist/*.whl
+
+poetry build; pip install --force-reinstall dist/*.whl; rehash
 ```
