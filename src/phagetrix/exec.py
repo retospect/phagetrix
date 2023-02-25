@@ -4,7 +4,7 @@ import phagetrix.trix as trix
 import argparse
 import re
 
-epilog="""
+epilog = """
 PhageTrix is a tool to generate phage display libraries.
 You probably have an idea what AA's you want to replace, and what
 you wish to replace them with. 
@@ -25,13 +25,14 @@ A7AVILM
 Cite https://doi.org/10.5281/zenodo.7676572
 """
 
+
 def process_request(lines, degen_dict):
     # Get the sequence
     seq = lines[0].strip()
 
     # Get the desired aminoacid variations
     variations = {}
-    
+
     # all valid aminoacids in a string for later validation
     valid_aas = "ACDEFGHIKLMNPQRSTVWY"
 
@@ -39,7 +40,7 @@ def process_request(lines, degen_dict):
         line = line.strip()
         if line == "":
             continue
-        
+
         originalAA = line[0]
 
         # With a regexp, get the multidigit integer starting at position 1
@@ -49,13 +50,15 @@ def process_request(lines, degen_dict):
 
         # Get the list of amino acids to be used for the degenerate codon
         # This is the rest of the line
-        aas = line[1+re.search(r"\d+", line[1:]).end():]
+        aas = line[1 + re.search(r"\d+", line[1:]).end() :]
 
         # Ensure that the aminoacid in the sequence is the same as the one in the line
         # and provide a good error message if it isn't
-        if seq[position-1] != originalAA:
-            raise Exception("Amino acid in sequence at position %d is %s, not %s" \
-                            % (position, seq[position-1], originalAA))
+        if seq[position - 1] != originalAA:
+            raise Exception(
+                "Amino acid in sequence at position %d is %s, not %s"
+                % (position, seq[position - 1], originalAA)
+            )
 
         # Check that all the amino acids in the list are valid
         for aa in aas:
@@ -63,22 +66,22 @@ def process_request(lines, degen_dict):
                 raise Exception("Amino acid %s is not valid" % aa)
 
         # Add the variation to the dictionary
-        variations[position] = aas  
+        variations[position] = aas
 
     generator = trix.DegenerateCodonGenerator(degen_dict)
-    
+
     # print numbers, so each number takes up 4 digits, for each position
-    print("".join(["%4d" % i for i in range(1, len(seq)+1)]))
+    print("".join(["%4d" % i for i in range(1, len(seq) + 1)]))
 
     # print the original aa sequence, so that each AA takes up 4 characters
     print("".join(["%4s" % aa for aa in seq]))
-    
+
     # Generate the degenerate primers
     codons = []
     for index, aa in enumerate(seq):
         # Get the degenerate codon for the amino acid at this position
-        if index+1 in variations:
-            aa = variations[index+1]
+        if index + 1 in variations:
+            aa = variations[index + 1]
         codon = generator.get_best_degenerate_codon(aa)
         codons.append(codon)
 
@@ -88,18 +91,19 @@ def process_request(lines, degen_dict):
     print()
     print("".join(codons))
 
-        
 
 def main():
-    parser = argparse.ArgumentParser(description="PhageTrix", 
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description="PhageTrix", formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     parser.description = "PhageTrix"
     parser.long_description = "Generate degenerate primers for phage display libraries"
     parser.epilog = epilog
     parser.version = "0.1.7"
-    parser.add_argument("input", type=argparse.FileType('r'), metavar='INPUT_FILE',
-                        help="Input file")
-    parser.add_argument("-c", "--company", help="Sequence company", default="IDT") 
+    parser.add_argument(
+        "input", type=argparse.FileType("r"), metavar="INPUT_FILE", help="Input file"
+    )
+    parser.add_argument("-c", "--company", help="Sequence company", default="IDT")
 
     args = parser.parse_args()
 
@@ -111,4 +115,3 @@ def main():
     infile.close()
 
     process_request(lines, degen_dict)
-

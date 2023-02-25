@@ -1,5 +1,6 @@
 from subprocess import Popen, PIPE, STDOUT
 
+
 def test_commandline_installed():
     p = Popen(["phagetrix"], stdout=PIPE, stderr=STDOUT)
     out, _ = p.communicate()

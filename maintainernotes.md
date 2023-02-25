@@ -1,9 +1,10 @@
 # Maintainer's build notes
 
 ```
-git commit 
 git clean -fdx --dry-run
+black tests/*.py src/phagetrix/*.py
 tox
+git commit 
 bumpver update --patch
 # Check the colab demo!
 poetry publish --build --username $PYPI_USERNAME --password $PYPI_PASSWORD
