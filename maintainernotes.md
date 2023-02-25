@@ -5,6 +5,7 @@ git commit
 git clean -fdx --dry-run
 tox
 bumpver update --patch
+# Check the colab demo!
 poetry publish --build --username $PYPI_USERNAME --password $PYPI_PASSWORD
 ```
 
