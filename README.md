@@ -16,7 +16,7 @@ When making phage display libraries, it's easy to run out of permutations. 1 lit
 $10^{12}$ different sequences.
 
 We can approximate how many combinations we generate with $(nr\ of\ choices)^{(nr\ of\ positions)}$.
-If we change 10 aminoacids to "any" aminoacid, we can change about 9 AA's: $20^9 \approx 10^{12}$
+If we change the aminoacids to "any" aminoacid, we can change about 9 AA's: $20^9 \approx 10^{12}$
 permutations.
 
 If we use the degenerate codon capabilities of the manufactureres such as
