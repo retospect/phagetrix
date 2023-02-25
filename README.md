@@ -15,7 +15,7 @@ A codon optimizer for phage display library generation.
 
 PhageTrix is a tool to generate phage display libraries.
 You probably have an idea what AA's you want to replace, and what
-you wish to replace them with.
+you want to replace them with.
 The sequence companies have a reasonable number of
 The file format has the AA sequence on the first line.
 Each following line is the AA to be changed,
