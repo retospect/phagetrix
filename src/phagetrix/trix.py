@@ -83,6 +83,7 @@ class DegenerateCodonGenerator:
 
         # Reverse map the aminoacids from the codon frequency table
         self.codon_to_aa = {}
+
         for aa, codons in self.codon_frequency.items():
             for codon in codons:
                 self.codon_to_aa[codon] = aa
@@ -177,4 +178,5 @@ class DegenerateCodonGenerator:
                 best_degenerate_codon_expanded_codon_count = expanded_codon_count
                 best_degenerate_codon_frequency = frequency
 
+        # Return the best degenerate codon
         return best_degenerate_codon

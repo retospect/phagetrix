@@ -2,7 +2,7 @@
 
 import phagetrix.trix as trix
 import argparse
-import python_codon_tables
+import python_codon_tables as pct
 import re
 
 epilog = """
@@ -27,7 +27,7 @@ Cite https://doi.org/10.5281/zenodo.7676572
 """
 
 
-def process_request(lines, degen_dict):
+def process_request(lines, degen_dict, codon_frequency=pct.get_codons_table("e_coli")):
     # Get the sequence
     seq = lines[0].strip()
 
@@ -69,7 +69,9 @@ def process_request(lines, degen_dict):
         # Add the variation to the dictionary
         variations[position] = aas
 
-    generator = trix.DegenerateCodonGenerator(degen_dict)
+    generator = trix.DegenerateCodonGenerator(
+        degenerate_bases=degen_dict, codon_frequency=codon_frequency
+    )
 
     # print numbers, so each number takes up 4 digits, for each position
     print("".join(["%4d" % i for i in range(1, len(seq) + 1)]))
@@ -79,15 +81,74 @@ def process_request(lines, degen_dict):
 
     # Generate the degenerate primers
     codons = []
+    # Keep track of the metadata for each codon
+    metadata = []
+    target_list = []
+    target_score = []
+    # Keep track of the on and off target AA's for each codon
     for index, aa in enumerate(seq):
         # Get the degenerate codon for the amino acid at this position
         if index + 1 in variations:
             aa = variations[index + 1]
         codon = generator.get_best_degenerate_codon(aa)
         codons.append(codon)
+        meta = generator.degenerate_codons[codon]
+        metadata.append(meta)
+        on_target = (
+            []
+        )  # A list of lists of a set with the number of occurances and the AA
+        off_target = (
+            []
+        )  # A list of lists of a set with the number of occurances and the AA
+        off_target_total = 0
+        on_target_total = 0
+        for prod_aa, count in meta["aas"].items():
+            if prod_aa in aa:
+                on_target.append((count, prod_aa))
+                on_target_total += count
+            else:
+                off_target.append((count, prod_aa))
+                off_target_total += count
+        on_target.sort(reverse=True)
+        off_target.sort(reverse=True)
+
+        target_score.append(on_target_total / (on_target_total + off_target_total))
+
+        # Add the on target AA's to the list
+        target_list.append(on_target)
+        # If there are off target AA's, add them to the list
+        if len(off_target) > 0:
+            target_list[index].append((0, "-"))
+            target_list[index] += off_target
 
     # Print the degenerate codons
-    print("".join(["%4s" % codon for codon in codons]))
+    print("".join(["%4s" % codon for codon in codons]), "  degenerate codons")
+
+    # Find the longest list of list in target_list
+    max_len = 0
+    for i in target_list:
+        if len(i) > max_len:
+            max_len = len(i)
+
+    for i in range(len(seq)):
+        if target_score[i] == 1:
+            print("    ", end="")
+        else:
+            print("  {:2d}".format(round(100 * target_score[i])), end="")
+    print("   percentage on target")
+
+    for i in range(max_len):
+        for j in target_list:
+            if len(j) > i:
+                if j[i][0] == 0:
+                    print("  --", end="")
+                else:
+                    print(" %2s" % j[i][0], "%1s" % j[i][1], end="", sep="")
+            else:
+                print("    ", end="")
+        print()
+
+    # Print the on and off target AA's
 
     print()
     print("".join(codons))
@@ -117,7 +178,7 @@ def main():
     infile = args.input
     degen_dict = trix.degenerate[args.company]
 
-    codon_frequency = (pct.get_codons_table("e_coli"),)
+    codon_frequency = pct.get_codons_table("e_coli")
 
     # Read in the input file
     lines = infile.readlines()
