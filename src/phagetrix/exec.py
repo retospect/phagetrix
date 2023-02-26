@@ -2,6 +2,7 @@
 
 import phagetrix.trix as trix
 import argparse
+import python_codon_tables
 import re
 
 epilog = """
@@ -104,14 +105,22 @@ def main():
         "input", type=argparse.FileType("r"), metavar="INPUT_FILE", help="Input file"
     )
     parser.add_argument("-c", "--company", help="Sequence company", default="IDT")
+    parser.add_argument(
+        "-s",
+        "--species",
+        help="Species for codon frequency table from python_codon_tables, default is e_coli",
+        default="e_coli",
+    )
 
     args = parser.parse_args()
 
     infile = args.input
     degen_dict = trix.degenerate[args.company]
 
+    codon_frequency = (pct.get_codons_table("e_coli"),)
+
     # Read in the input file
     lines = infile.readlines()
     infile.close()
 
-    process_request(lines, degen_dict)
+    process_request(lines, degen_dict, codon_frequency)
