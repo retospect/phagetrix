@@ -161,7 +161,7 @@ def main():
     parser.description = "PhageTrix"
     parser.long_description = "Generate degenerate primers for phage display libraries"
     parser.epilog = epilog
-    parser.version = "0.1.12"
+    parser.version = "0.2.0"
     parser.add_argument(
         "input", type=argparse.FileType("r"), metavar="INPUT_FILE", help="Input file"
     )
