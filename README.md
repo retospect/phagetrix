@@ -46,10 +46,10 @@ Phagetrix will generate the best degenerate codon for each position.
 Example:
 
 ```txt
-VLPYMVAQVQ
-P3PFYA
-Y4YPFYE
-A7AVILM
+VLAYMVAQVQ
+A3AGVIL
+Y4YFW
+A7AVIL
 ```
 
 1. The first line is the sequence you want to alter.
@@ -60,12 +60,32 @@ A7AVILM
 Output:
 
 ```txt
+phagetrix ./sample.phagetrix
    1   2   3   4   5   6   7   8   9  10
-   V   L   P   Y   M   V   A   Q   V   Q
- GTT CTT BHC BHW ATG GTT DYR CAG GTT CAG
+   V   L   A   Y   M   V   A   Q   V   Q
+ GTT CTT VBA TDK ATG GTT VYA CAG GTT CAG   degenerate codons
+          56  50          67               percentage on target
+  1V  1L  1V  1Y  1M  1V  1V  1Q  1V  1Q
+          1L  1W          1L
+          1I  1F          1I
+          1G  --          1A
+          1A  1L          --
+          --  1C          1T
+          2R  1*          1P
+          1T
+          1P
 
-GTTCTTBHCBHWATGGTTDYRCAGGTTCAG
+GTTCTTVBATDKATGGTTVYACAGGTTCAG
 ```
+
+The lines of the output show:
+1. number of the AA on the first line
+2. original AA on the second line
+3. codon made from degenerate basepairs
+4. the percentage of product for this codon that matches what the user specified
+5. how many codons code for which aminoacid. The AA below the ```--``` line are off-target codons that were not
+   requested.
+- the last line shows the codons made from degenerate basepairs again, in a format that can easily be copied and pasted.
 
 By default this uses the degenerate codons from
 [IDT](
