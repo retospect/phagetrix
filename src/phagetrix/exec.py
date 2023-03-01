@@ -6,6 +6,7 @@ import python_codon_tables as pct
 from quantiphy import Quantity
 import re
 
+Quantity.set_prefs(output_sf = Quantity.all_sf)
 # From wikipedia
 avogadro = 6.02214076e23
 
@@ -163,16 +164,15 @@ def process_request(lines, degen_dict, codon_frequency=pct.get_codons_table("e_c
         prob /= x
 
     print()
-    print("Probability for any one outcome:", Quantity(prob, ""), "=1/",1/prob)
+    print("Probability for any one outcome: ", Quantity(prob, ""), "=1/",1/prob)
 
     # Hack to get a number that reads in mM, need better example
     # prob = prob/(10.0**20)
     # TODO: Add stats for "80% of possible permutations are in your sample" if you order that many µM.
     one_particle_in_moles = 1.0 / avogadro
-    print(
-        "Amount of material to get all the combinations, assuming each one occurs once only",
-        Quantity(one_particle_in_moles * 1 / prob, "M"),
-    )
+    print("Amount of material to get all the combinations, ")
+    print("assuming each one occurs once only")
+    print(Quantity(one_particle_in_moles * 1 / prob, "M"))
 
     print()
     print("".join(codons))

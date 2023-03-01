@@ -12,6 +12,9 @@ poetry publish --build --username $PYPI_USERNAME --password $PYPI_PASSWORD
 ## test:
 ```
 pip uninstall -y phagetrix quantiphy python_codon_tables
+
+pip uninstall phagetrix -y; poetry build; pip install dist/*.whl
+
 python -m pip cache purge
 
 pip install phagetrix
