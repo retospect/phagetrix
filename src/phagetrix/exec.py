@@ -163,7 +163,7 @@ def process_request(lines, degen_dict, codon_frequency=pct.get_codons_table("e_c
         prob /= x
 
     print()
-    print("Probability for any one outcome:", Quantity(prob, ""))
+    print("Probability for any one outcome:", Quantity(prob, ""), "=1/",1/prob)
 
     # Hack to get a number that reads in mM, need better example
     # prob = prob/(10.0**20)
