@@ -15,6 +15,7 @@ homepage="https://github.com/retospect/phagetrix"
 
 [tool.poetry.dependencies]
 python_codon_tables = "*"
+quantiphy = "*"
 
 [tool.poetry.scripts]
 phagetrix= "phagetrix.exec:main"

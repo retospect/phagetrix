@@ -3,7 +3,11 @@
 import phagetrix.trix as trix
 import argparse
 import python_codon_tables as pct
+from quantiphy import Quantity
 import re
+
+# From wikipedia
+avogadro = 6.02214076e23
 
 epilog = """
 PhageTrix is a tool to generate phage display libraries.
@@ -148,7 +152,27 @@ def process_request(lines, degen_dict, codon_frequency=pct.get_codons_table("e_c
                 print("    ", end="")
         print()
 
-    # Print the on and off target AA's
+    probs_out_of = []
+    for t in target_list:
+        s = 0
+        for i in range(0, len(t)):
+            s += t[i][0]
+        probs_out_of.append(s)
+    prob = 1
+    for x in probs_out_of:
+        prob /= x
+
+    print()
+    print("Probability for any one outcome:", Quantity(prob, ""))
+
+    # Hack to get a number that reads in mM, need better example
+    # prob = prob/(10.0**20)
+    # TODO: Add stats for "80% of possible permutations are in your sample" if you order that many µM.
+    one_particle_in_moles = 1.0 / avogadro
+    print(
+        "Amount of material to get all the combinations, assuming each one occurs once only",
+        Quantity(one_particle_in_moles * 1 / prob, "M"),
+    )
 
     print()
     print("".join(codons))
