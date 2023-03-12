@@ -97,3 +97,9 @@ https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-tha
 https://colab.research.google.com/assets/colab-badge.svg)](
 https://colab.research.google.com/github/retospect/phagetrix/blob/main/phagetrix.ipynb)
 - Install it on your machine ```pip install phagetrix``` to get the ```phagetrix``` command line tool. Requires python3.
+
+# Related projects
+
+Other projects that are potentially interesting, if you are into this sort of stuff.
+
+- [Make primers for highly variable genomes](https://github.com/jonas-fuchs/varVAMP)
