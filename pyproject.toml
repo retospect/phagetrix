@@ -10,7 +10,9 @@ readme = "README.md"
 version = "0.2.1"
 keywords = ["example"]
 license = "GPL-3"
-classifiers = [ "Programming Language :: Python :: 3", ]
+classifiers = [ "Programming Language :: Python :: 3", 
+                "Topic :: Scientific/Engineering :: Bio-Informatics",
+                "Topic :: Software Development :: Libraries :: Python Modules"]
 homepage="https://github.com/retospect/phagetrix"
 
 [tool.poetry.dependencies]
