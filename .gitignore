@@ -6,3 +6,5 @@ dist
 poetry.lock
 ***.pdf
 ***.txt
+package-lock.json
+package.json
