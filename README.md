@@ -14,8 +14,8 @@ liter of phage solution can hold about $10^{12}$ different sequences.
 
 We can approximate how many combinations we generate with $(nr\
 of\
-choices)^{(nr\ of\ positions)}$. If we change the aminoacids to "any"
-aminoacid, we can change about 9 AA's: $20^9 \approx 10^{12}$ permutations.
+choices)^{(nr\\ of\\ positions)}$. If we change the aminoacids to "any"
+aminoacid, we can change about 9 AA's: $20^9 \\approx 10^{12}$ permutations.
 
 If we use the degenerate codon capabilities of the manufactureres such as
 [IDT](<https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-that-you-use-(eg.-r-w-k-v-s)->)
@@ -23,7 +23,7 @@ to the fullest, we can probably make combinations that are partially rational,
 and allow for 6 permutations in any postion.
 
 That allows us to check out many more combinations that are likely to work:
-$6^{15} \approx 10^{12}$, so about 15 variable AA's instead of 9.
+$6^{15} \\approx 10^{12}$, so about 15 variable AA's instead of 9.
 
 This tool allows you to easily specify what AA permutations you want, in which
 position, and calculates the best sequence of degenerate codons.
@@ -48,9 +48,9 @@ A7AVIL
 ```
 
 1. The first line is the sequence you want to alter.
-2. The P in position 3 should be either a P, F, Y or an A
-3. The Y in position 4 should be either a Y, P, F, or an E
-4. The A in position 7 should be either an A, V, I, L or an M
+1. The P in position 3 should be either a P, F, Y or an A
+1. The Y in position 4 should be either a Y, P, F, or an E
+1. The A in position 7 should be either an A, V, I, L or an M
 
 Output:
 
@@ -76,10 +76,10 @@ GTTCTTVBATDKATGGTTVYACAGGTTCAG
 The lines of the output show:
 
 1. number of the AA on the first line
-2. original AA on the second line
-3. codon made from degenerate basepairs
-4. the percentage of product for this codon that matches what the user specified
-5. how many codons code for which aminoacid. The AA below the `--` line are
+1. original AA on the second line
+1. codon made from degenerate basepairs
+1. the percentage of product for this codon that matches what the user specified
+1. how many codons code for which aminoacid. The AA below the `--` line are
    off-target codons that were not requested.
 
 - the last line shows the codons made from degenerate basepairs again, in a

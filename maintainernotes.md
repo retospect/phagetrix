@@ -10,6 +10,7 @@ poetry publish --build --username $PYPI_USERNAME --password $PYPI_PASSWORD
 ```
 
 ## test:
+
 ```
 pip uninstall -y phagetrix quantiphy python_codon_tables
 
