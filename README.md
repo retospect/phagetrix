@@ -12,10 +12,10 @@ generation.
 When making phage display libraries, it's easy to run out of permutations. 1
 liter of phage solution can hold about $10^{12}$ different sequences.
 
-We can approximate how many combinations we generate with $\text{nr
-of
-choices}^\text{(nr of positions)}$. If we change the aminoacids to "any"
-aminoacid, we can change about 9 AA's: $20^9 \\approx 10^{12}$ permutations.
+We can approximate how many combinations we generate with 
+$(nri\ of\ choices)^(nr\ of\ positions)$. 
+If we change the aminoacids to "any" aminoacid, we can change about 9 AA's: 
+$20^9 \\approx 10^{12}$ permutations.
 
 If we use the degenerate codon capabilities of the manufactureres such as
 [IDT](<https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-that-you-use-(eg.-r-w-k-v-s)->)
@@ -30,7 +30,7 @@ position, and calculates the best sequence of degenerate codons.
 
 ## Example
 
-PhageTrix is a tool to generate phage display libraries. You probably have an
+Phagetrix is a tool to generate phage display libraries. You probably have an
 idea what AA's you want to replace, and what you want to replace them with. The
 sequence companies have a reasonable number of The file format has the AA
 sequence on the first line. Each following line is the AA to be changed, the
