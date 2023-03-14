@@ -13,7 +13,7 @@ When making phage display libraries, it's easy to run out of permutations. 1
 liter of phage solution can hold about $10^{12}$ different sequences.
 
 We can approximate how many combinations we generate with 
-$(nri\ of\ choices)^(nr\ of\ positions)$. 
+$(nr\ of\ choices)^{(nr\ of\ positions)}$. 
 If we change the aminoacids to "any" aminoacid, we can change about 9 AA's: 
 $20^9 \\approx 10^{12}$ permutations.
 
