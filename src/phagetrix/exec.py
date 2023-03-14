@@ -6,7 +6,7 @@ import python_codon_tables as pct
 from quantiphy import Quantity
 import re
 
-Quantity.set_prefs(output_sf = Quantity.all_sf)
+Quantity.set_prefs(output_sf="QRYZEPTGMkmunpfazyrq")
 # From wikipedia
 avogadro = 6.02214076e23
 
@@ -42,11 +42,25 @@ def process_request(lines, degen_dict, codon_frequency=pct.get_codons_table("e_c
     # all valid aminoacids in a string for later validation
     valid_aas = "ACDEFGHIKLMNPQRSTVWY"
 
+    extraConf = {"offset": 0}
+
     for line in lines[1:]:
         line = line.strip()
         if line == "":
             continue
 
+        # If the line matches the pattern "# varName = 5" or "# varName = 5.5", then it is a configuration variable
+        if re.match(r"#\s*\w+\s*=\s*\d+\.?\d*", line):
+            # Get all the numeric patterns, ie,
+            # the line "# varName = 5 will add an entry to extraConf with key varName and value 0
+            # the line "# varName = 5.5 will add an entry to extraConf with key varName and value 5.5
+
+            # Get the name of the variable
+            varName = re.search(r"\w+", line[1:]).group()
+            # Get the value of the variable
+            varValue = float(re.search(r"\d+\.?\d*", line[1:]).group())
+            extraConf[varName] = varValue
+            continue
         originalAA = line[0]
 
         # With a regexp, get the multidigit integer starting at position 1
@@ -74,12 +88,14 @@ def process_request(lines, degen_dict, codon_frequency=pct.get_codons_table("e_c
         # Add the variation to the dictionary
         variations[position] = aas
 
+    offset = int(extraConf["offset"])
+
     generator = trix.DegenerateCodonGenerator(
         degenerate_bases=degen_dict, codon_frequency=codon_frequency
     )
 
     # print numbers, so each number takes up 4 digits, for each position
-    print("".join(["%4d" % i for i in range(1, len(seq) + 1)]))
+    print("".join(["%4d" % (int(i) + offset) for i in range(1, len(seq) + 1)]))
 
     # print the original aa sequence, so that each AA takes up 4 characters
     print("".join(["%4s" % aa for aa in seq]))
@@ -164,7 +180,7 @@ def process_request(lines, degen_dict, codon_frequency=pct.get_codons_table("e_c
         prob /= x
 
     print()
-    print("Probability for any one outcome: ", Quantity(prob, ""), "=1/",1/prob)
+    print("Probability for any one outcome: ", Quantity(prob, ""), "=1/", 1 / prob)
 
     # Hack to get a number that reads in mM, need better example
     # prob = prob/(10.0**20)
