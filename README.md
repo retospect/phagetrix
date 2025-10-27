@@ -4,6 +4,7 @@
 [![Python](https://img.shields.io/pypi/pyversions/phagetrix.svg)](https://pypi.org/project/phagetrix/)
 [![License](https://img.shields.io/pypi/l/phagetrix.svg)](https://github.com/retospect/phagetrix/blob/main/LICENSE)
 [![CI](https://github.com/retospect/phagetrix/actions/workflows/check.yml/badge.svg)](https://github.com/retospect/phagetrix/actions/workflows/check.yml)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/retospect/phagetrix/blob/main/examples/phagetrix.ipynb)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.7676572-blue)](https://doi.org/10.5281/zenodo.7676572)
 
 **A powerful codon optimization tool for [phage display library](https://bio.libretexts.org/Bookshelves/Biochemistry/Supplemental_Modules_(Biochemistry)/4._Biotechnology_2/4.3%3A_M13_Phage_Display_Libraries) generation and protein engineering.**
@@ -122,7 +123,7 @@ poetry run phagetrix --help
 ```
 
 ### Try Online
-[![Open in Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/retospect/phagetrix/blob/main/examples/phagetrix.ipynb)
+Click the **"Open In Colab"** badge at the top to try Phagetrix interactively in your browser with comprehensive examples!
 
 **Requirements:** Python 3.10 or higher
 
