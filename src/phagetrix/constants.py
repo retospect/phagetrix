@@ -51,3 +51,8 @@ degenerate = {
 
 # Valid amino acids for validation
 VALID_AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY"
+
+# Species aliases for common names
+SPECIES_ALIASES = {
+    "e_coli": "e_coli_316407",
+}

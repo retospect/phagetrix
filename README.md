@@ -50,14 +50,24 @@ When creating phage display libraries, you're limited by experimental constraint
 
 ## Quick Start
 
-### Input Format
+### Python Library (Recommended)
+
+```python
+import phagetrix
+
+# Optimize degenerate codons for your sequence
+result = phagetrix.optimize_codons(
+    sequence="VLAYMVAQVQ",
+    variations={3: "AGVIL", 4: "YFW", 7: "AVIL"}
+)
+
+print("Optimized DNA sequence:", result["final_sequence"])
+print("Efficiency per position:", result["efficiency"])
+```
+
+### Command Line Interface
 
 Create a simple text file specifying your target sequence and desired variations:
-
-- **Line 1**: Your base amino acid sequence  
-- **Following lines**: `[Original AA][Position][Allowed AAs]`
-
-### Example
 
 ```txt
 VLAYMVAQVQ
@@ -66,12 +76,7 @@ Y4YFW
 A7AVIL
 ```
 
-**Explanation:**
-- Position 3: A → A,G,V,I,L (hydrophobic alternatives)
-- Position 4: Y → Y,F,W (aromatic alternatives)  
-- Position 7: A → A,V,I,L (hydrophobic alternatives)
-
-### Run Phagetrix
+Run Phagetrix:
 
 ```bash
 phagetrix input.txt
@@ -121,6 +126,50 @@ poetry run phagetrix --help
 
 **Requirements:** Python 3.8.1 or higher
 
+## Library Usage
+
+### Common Functions
+
+```python
+import phagetrix
+
+# Get available companies and species
+companies = phagetrix.get_available_companies()
+species = phagetrix.get_available_species()
+
+# Parse existing Phagetrix files
+seq, variations, config = phagetrix.parse_phagetrix_file("input.phagetrix")
+
+# Calculate library statistics
+stats = phagetrix.calculate_library_stats("ACDEF", {1: "AG", 3: "DEF"})
+print(f"Library diversity: {stats['diversity']:,} variants")
+
+# Compare different companies
+for company in ["IDT", "Eurofins", "NEB"]:
+    result = phagetrix.optimize_codons("ACDEF", {1: "AG"}, company=company)
+    print(f"{company}: {result['final_sequence']}")
+```
+
+### Batch Processing
+
+```python
+# Process multiple sequences
+sequences = [
+    ("CDR1", "RASQSISSWLA", {4: "QE", 6: "ST"}),
+    ("CDR2", "AASSLQS", {3: "ST", 5: "LI"}),
+    ("CDR3", "QQSYSTPLT", {3: "ST", 7: "PT"})
+]
+
+for name, seq, vars in sequences:
+    result = phagetrix.optimize_codons(seq, vars)
+    print(f"{name}: {result['final_sequence']}")
+```
+
+For complete examples, see **[Library Usage Guide](LIBRARY_USAGE.md)** and run:
+```bash
+python examples/library_examples.py
+```
+
 ## Advanced Features
 
 ### Custom Numbering
@@ -152,9 +201,12 @@ phagetrix --species s_cerevisiae_4932 input.txt  # Yeast
 
 ## Documentation & Support
 
+- **[Library Usage Guide](LIBRARY_USAGE.md)** - Complete Python library documentation
 - **[Contributing Guidelines](CONTRIBUTING.md)** - Help improve Phagetrix
+- **[Release Process](RELEASE.md)** - How to create releases
+- **[GitHub Workflows](.github/WORKFLOWS.md)** - Automated CI/CD and release process
 - **[Changelog](CHANGELOG.md)** - See what's new
-- **[Examples](examples/)** - More usage examples
+- **[Examples](examples/)** - Code examples and tutorials
 
 ## Citation
 
@@ -173,6 +225,10 @@ If you use Phagetrix in your research, please cite:
 
 - **[varVAMP](https://github.com/jonas-fuchs/varVAMP)** - Primers for highly variable genomes
 - **[Biopython](https://biopython.org/)** - Python bioinformatics toolkit
+
+## Acknowledgments
+
+This package has been enhanced and maintained with assistance from **[Windsurf](https://codeium.com/windsurf)**, an AI-powered development environment that helped implement modern development practices, comprehensive testing, type safety, security scanning, and automated CI/CD workflows.
 
 ## License
 

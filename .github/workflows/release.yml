@@ -1,0 +1,73 @@
+name: Manual Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: latest
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Install dependencies
+      run: poetry install --extras dev
+
+    - name: Extract version from tag
+      id: get_version
+      run: |
+        if [[ "${{ github.event_name }}" == "release" ]]; then
+          VERSION=${GITHUB_REF#refs/tags/v}
+        else
+          VERSION=$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/')
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Releasing version: $VERSION"
+
+    - name: Update version in files (if needed)
+      run: |
+        VERSION=${{ steps.get_version.outputs.version }}
+        # Update pyproject.toml
+        sed -i "s/version = \".*\"/version = \"$VERSION\"/" pyproject.toml
+        # Update __init__.py  
+        sed -i "s/__version__ = \".*\"/__version__ = \"$VERSION\"/" src/phagetrix/__init__.py
+
+    - name: Run comprehensive tests
+      run: |
+        poetry run pytest --cov=phagetrix --cov-report=xml --cov-fail-under=80
+        poetry run mypy src
+        poetry run bandit -r src/ -f json || true
+        poetry run safety check || true
+
+    - name: Build package
+      run: poetry build
+
+    - name: Publish to PyPI
+      env:
+        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
+      run: poetry publish
+
+    - name: Upload release assets
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          dist/*.whl
+          dist/*.tar.gz
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,6 +1,6 @@
 """Output formatting for phagetrix results."""
 
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Any
 
 from quantiphy import Quantity
 
@@ -134,7 +134,7 @@ class OutputFormatter:
             s = sum(i[0] for i in t)
             probs_out_of.append(s)
 
-        prob = 1
+        prob = 1.0
         for x in probs_out_of:
             if x > 0:  # Avoid division by zero
                 prob /= x

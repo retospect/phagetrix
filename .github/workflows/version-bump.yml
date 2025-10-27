@@ -1,0 +1,156 @@
+name: Version Bump and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      dry_run:
+        description: 'Dry run (no actual release)'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  version-bump:
+    runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.bump.outputs.new_version }}
+      should_release: ${{ steps.bump.outputs.should_release }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: latest
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Install dependencies
+      run: poetry install --extras dev
+
+    - name: Configure git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+
+    - name: Run tests before version bump
+      run: |
+        poetry run pytest --cov=phagetrix --cov-report=xml
+        poetry run mypy src
+        poetry run bandit -r src/ -f json || true
+        poetry run safety check || true
+
+    - name: Bump version
+      id: bump
+      run: |
+        if [ "${{ inputs.dry_run }}" = "true" ]; then
+          echo "🔍 DRY RUN MODE - No actual changes will be made"
+          CURRENT_VERSION=$(poetry version -s)
+          echo "Current version: $CURRENT_VERSION"
+          echo "Would bump: ${{ inputs.version_type }}"
+          echo "new_version=$CURRENT_VERSION-dry-run" >> $GITHUB_OUTPUT
+          echo "should_release=false" >> $GITHUB_OUTPUT
+        else
+          echo "🚀 Bumping version: ${{ inputs.version_type }}"
+          poetry version ${{ inputs.version_type }}
+          NEW_VERSION=$(poetry version -s)
+          echo "New version: $NEW_VERSION"
+          
+          # Update __init__.py
+          sed -i "s/__version__ = \".*\"/__version__ = \"$NEW_VERSION\"/" src/phagetrix/__init__.py
+          
+          # Commit changes
+          git add pyproject.toml src/phagetrix/__init__.py
+          git commit -m "bump version to $NEW_VERSION"
+          git tag "v$NEW_VERSION"
+          git push origin main
+          git push origin "v$NEW_VERSION"
+          
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "should_release=true" >> $GITHUB_OUTPUT
+        fi
+
+  release:
+    needs: version-bump
+    if: needs.version-bump.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: "v${{ needs.version-bump.outputs.new_version }}"
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: latest
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Install dependencies
+      run: poetry install --extras dev
+
+    - name: Final test run
+      run: |
+        poetry run pytest --cov=phagetrix
+        poetry run mypy src
+
+    - name: Build package
+      run: poetry build
+
+    - name: Publish to PyPI
+      env:
+        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
+      run: poetry publish
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: "v${{ needs.version-bump.outputs.new_version }}"
+        name: "Release v${{ needs.version-bump.outputs.new_version }}"
+        body: |
+          ## Changes in v${{ needs.version-bump.outputs.new_version }}
+          
+          This release was automatically generated.
+          
+          ### Installation
+          ```bash
+          pip install phagetrix==${{ needs.version-bump.outputs.new_version }}
+          ```
+          
+          ### What's Changed
+          - See commit history for detailed changes
+          
+        files: |
+          dist/*.whl
+          dist/*.tar.gz
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

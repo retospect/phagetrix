@@ -56,3 +56,7 @@ tox: ## Run tox tests
 
 example: ## Run example
 	poetry run phagetrix examples/sample.phagetrix
+
+bump-version: ## Bump version (usage: make bump-version VERSION=0.2.4)
+	@if [ -z "$(VERSION)" ]; then echo "Usage: make bump-version VERSION=0.2.4"; exit 1; fi
+	python scripts/bump_version.py $(VERSION)

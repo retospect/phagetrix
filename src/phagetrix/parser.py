@@ -9,7 +9,7 @@ from .constants import VALID_AMINO_ACIDS
 class InputParser:
     """Parses and validates phagetrix input files."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.valid_aas = VALID_AMINO_ACIDS
 
     def parse(self, lines: List[str]) -> Tuple[str, Dict[int, str], Dict[str, float]]:
@@ -43,8 +43,8 @@ class InputParser:
                 )
 
         # Parse variations and configuration
-        variations = {}
-        config = {"offset": 0}
+        variations: Dict[int, str] = {}
+        config: Dict[str, float] = {"offset": 0.0}
 
         for line in lines[1:]:
             line = line.strip()

@@ -1,6 +1,7 @@
 # Phagetrix library
 
 from collections import defaultdict
+from typing import Dict, List, Optional, Set, Any
 
 import python_codon_tables as pct
 
@@ -14,9 +15,9 @@ class DegenerateCodonGenerator:
     # Can find the best degenerate codon for a given list of aminoacids
     def __init__(
         self,
-        degenerate_bases=degenerate["IDT"],
-        codon_frequency=pct.get_codons_table("e_coli"),
-    ):
+        degenerate_bases: Dict[str, str] = degenerate["IDT"],
+        codon_frequency: Dict[str, List[str]] = pct.get_codons_table("e_coli_316407"),
+    ) -> None:
         self.degenerate_bases = degenerate_bases
         self.codon_frequency = codon_frequency
 
@@ -32,12 +33,12 @@ class DegenerateCodonGenerator:
         #     many times it codes for each in a map
         #   - expanded_codon_count: The number of permutations
         #     of normal codons that it can make
-        self.degenerate_codons = defaultdict(
+        self.degenerate_codons: Dict[str, Dict[str, Any]] = defaultdict(
             lambda: {"aas": defaultdict(int), "expanded_codon_count": 0}
         )
 
         # Reverse map the aminoacids from the codon frequency table
-        self.codon_to_aa = {}
+        self.codon_to_aa: Dict[str, str] = {}
 
         for aa, codons in self.codon_frequency.items():
             for codon in codons:
@@ -45,7 +46,7 @@ class DegenerateCodonGenerator:
 
         # Create a dictionary of all the amino acids and a list of all their
         # associated degenerate codons
-        self.amino_acid_dict = defaultdict(list)
+        temp_amino_acid_dict: Dict[str, List[str]] = defaultdict(list)
         for base1 in self.degenerate_bases.keys():
             for base2 in self.degenerate_bases.keys():
                 for base3 in self.degenerate_bases.keys():
@@ -54,16 +55,17 @@ class DegenerateCodonGenerator:
                         aa = self.codon_to_aa[normalCodon]
                         self.degenerate_codons[degenerate_codon]["aas"][aa] += 1
 
-                        self.amino_acid_dict[aa].append(degenerate_codon)
+                        temp_amino_acid_dict[aa].append(degenerate_codon)
                         self.degenerate_codons[degenerate_codon][
                             "expanded_codon_count"
                         ] += 1
 
         # Convert the amioacid list codons to a set
-        for aa in self.amino_acid_dict.keys():
-            self.amino_acid_dict[aa] = set(self.amino_acid_dict[aa])
+        self.amino_acid_dict: Dict[str, Set[str]] = {}
+        for aa in temp_amino_acid_dict.keys():
+            self.amino_acid_dict[aa] = set(temp_amino_acid_dict[aa])
 
-    def get_normal_codons(self, degenerate_codon):
+    def get_normal_codons(self, degenerate_codon: str) -> List[str]:
         # Returns a list of all the normal codons that can be made
         # from a degenerate codon
         normal_codons = []
@@ -76,7 +78,7 @@ class DegenerateCodonGenerator:
                     normal_codons.append(b1 + b2 + b3)
         return normal_codons
 
-    def get_best_degenerate_codon(self, amino_acids):
+    def get_best_degenerate_codon(self, amino_acids: str) -> str:
         # Returns the best degenerate codon for a given list of amino acids
         # The best degenerate codon is the one that codes for all the
         # amino acids in the list and the fewest other amino acids.
@@ -98,10 +100,10 @@ class DegenerateCodonGenerator:
             )
 
         # Find the best degenerate codon
-        best_degenerate_codon = None
-        best_degenerate_codon_aas = None
-        best_degenerate_codon_expanded_codon_count = None
-        best_degenerate_codon_frequency = None
+        best_degenerate_codon: Optional[str] = None
+        best_degenerate_codon_aas: Optional[int] = None
+        best_degenerate_codon_expanded_codon_count: Optional[int] = None
+        best_degenerate_codon_frequency: Optional[float] = None
         for degenerate_codon in degenerate_codons:
             # Get the number of amino acids that the degenerate codon codes for
             aas = self.degenerate_codons[degenerate_codon]["aas"]
@@ -114,21 +116,24 @@ class DegenerateCodonGenerator:
             ]
 
             # Get the frequency of the degenerate codon
-            frequency = 1  # self.codon_frequency[degenerate_codon]
+            frequency = 1.0  # self.codon_frequency[degenerate_codon]
 
             # If the degenerate codon is better than the current best, replace it
             if (
                 best_degenerate_codon is None
-                or (num_aas < best_degenerate_codon_aas)
+                or (best_degenerate_codon_aas is not None and num_aas < best_degenerate_codon_aas)
                 or (
-                    num_aas == best_degenerate_codon_aas
-                    and expanded_codon_count
-                    < best_degenerate_codon_expanded_codon_count
+                    best_degenerate_codon_aas is not None
+                    and best_degenerate_codon_expanded_codon_count is not None
+                    and num_aas == best_degenerate_codon_aas
+                    and expanded_codon_count < best_degenerate_codon_expanded_codon_count
                 )
                 or (
-                    num_aas == best_degenerate_codon_aas
-                    and expanded_codon_count
-                    == best_degenerate_codon_expanded_codon_count
+                    best_degenerate_codon_aas is not None
+                    and best_degenerate_codon_expanded_codon_count is not None
+                    and best_degenerate_codon_frequency is not None
+                    and num_aas == best_degenerate_codon_aas
+                    and expanded_codon_count == best_degenerate_codon_expanded_codon_count
                     and frequency > best_degenerate_codon_frequency
                 )
             ):
@@ -138,4 +143,6 @@ class DegenerateCodonGenerator:
                 best_degenerate_codon_frequency = frequency
 
         # Return the best degenerate codon
+        if best_degenerate_codon is None:
+            raise ValueError("No suitable degenerate codon found")
         return best_degenerate_codon

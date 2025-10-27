@@ -1,0 +1,151 @@
+name: Auto Release on Main
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'pyproject.toml'
+      - 'tests/**'
+  workflow_dispatch:
+
+jobs:
+  check-if-release-needed:
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.check.outputs.should_release }}
+      version_changed: ${{ steps.check.outputs.version_changed }}
+      current_version: ${{ steps.check.outputs.current_version }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Check if version changed
+      id: check
+      run: |
+        # Get current version from pyproject.toml
+        CURRENT_VERSION=$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/')
+        echo "Current version: $CURRENT_VERSION"
+        
+        # Check if this version tag already exists
+        if git tag | grep -q "^v$CURRENT_VERSION$"; then
+          echo "Version v$CURRENT_VERSION already exists as a tag"
+          echo "should_release=false" >> $GITHUB_OUTPUT
+          echo "version_changed=false" >> $GITHUB_OUTPUT
+        else
+          echo "Version v$CURRENT_VERSION is new"
+          echo "should_release=true" >> $GITHUB_OUTPUT
+          echo "version_changed=true" >> $GITHUB_OUTPUT
+        fi
+        
+        echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+  test-and-release:
+    needs: check-if-release-needed
+    if: needs.check-if-release-needed.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: latest
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Install dependencies
+      run: poetry install --extras dev
+
+    - name: Run comprehensive tests
+      run: |
+        echo "🧪 Running comprehensive test suite..."
+        poetry run pytest --cov=phagetrix --cov-report=xml --cov-fail-under=80
+        poetry run mypy src
+        poetry run bandit -r src/ -f json || true
+        poetry run safety check || true
+        echo "✅ All tests passed!"
+
+    - name: Build package
+      run: |
+        echo "📦 Building package..."
+        poetry build
+        echo "✅ Package built successfully!"
+
+    - name: Test package installation
+      run: |
+        echo "🔍 Testing package installation..."
+        pip install dist/*.whl
+        python -c "import phagetrix; print(f'✅ Package installed successfully: v{phagetrix.__version__}')"
+
+    - name: Create git tag
+      run: |
+        VERSION="${{ needs.check-if-release-needed.outputs.current_version }}"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git tag "v$VERSION"
+        git push origin "v$VERSION"
+
+    - name: Publish to PyPI
+      env:
+        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
+      run: |
+        echo "🚀 Publishing to PyPI..."
+        poetry publish
+        echo "✅ Published to PyPI successfully!"
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: "v${{ needs.check-if-release-needed.outputs.current_version }}"
+        name: "Release v${{ needs.check-if-release-needed.outputs.current_version }}"
+        body: |
+          ## 🚀 Phagetrix v${{ needs.check-if-release-needed.outputs.current_version }}
+          
+          This release was automatically created when changes were pushed to main.
+          
+          ### 📦 Installation
+          ```bash
+          pip install phagetrix==${{ needs.check-if-release-needed.outputs.current_version }}
+          ```
+          
+          ### 🧬 Quick Start
+          ```python
+          import phagetrix
+          
+          result = phagetrix.optimize_codons(
+              sequence="VLAYMVAQVQ",
+              variations={3: "AGVIL", 4: "YFW", 7: "AVIL"}
+          )
+          print(result["final_sequence"])
+          ```
+          
+          ### 📋 What's New
+          - See commit history for detailed changes since last release
+          - All tests passing with >80% coverage
+          - Security scanned with Bandit and Safety
+          
+          ### 🔗 Links
+          - [PyPI Package](https://pypi.org/project/phagetrix/${{ needs.check-if-release-needed.outputs.current_version }}/)
+          - [Documentation](https://github.com/retospect/phagetrix)
+          - [Examples](https://github.com/retospect/phagetrix/tree/main/examples)
+          
+        files: |
+          dist/*.whl
+          dist/*.tar.gz
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
