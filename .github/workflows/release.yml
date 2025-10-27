@@ -61,9 +61,7 @@ jobs:
       run: poetry build
 
     - name: Publish to PyPI
-      env:
-        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
-      run: poetry publish
+      uses: pypa/gh-action-pypi-publish@release/v1
 
     - name: Upload release assets
       uses: softprops/action-gh-release@v1

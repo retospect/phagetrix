@@ -102,12 +102,7 @@ jobs:
         git push origin "v$VERSION"
 
     - name: Publish to PyPI
-      env:
-        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
-      run: |
-        echo "🚀 Publishing to PyPI..."
-        poetry publish
-        echo "✅ Published to PyPI successfully!"
+      uses: pypa/gh-action-pypi-publish@release/v1
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
