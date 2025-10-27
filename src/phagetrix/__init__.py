@@ -26,7 +26,7 @@ from .api import (
     optimize_codons,
     parse_phagetrix_file,
 )
-from .constants import VALID_AMINO_ACIDS, degenerate, SPECIES_ALIASES
+from .constants import SPECIES_ALIASES, VALID_AMINO_ACIDS, degenerate
 
 # Low-level API (for advanced users)
 from .core import DegenerateCodonGenerator

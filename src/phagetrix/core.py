@@ -1,7 +1,7 @@
 # Phagetrix library
 
 from collections import defaultdict
-from typing import Dict, List, Optional, Set, Any
+from typing import Any, Dict, List, Optional, Set
 
 import python_codon_tables as pct
 
@@ -121,19 +121,24 @@ class DegenerateCodonGenerator:
             # If the degenerate codon is better than the current best, replace it
             if (
                 best_degenerate_codon is None
-                or (best_degenerate_codon_aas is not None and num_aas < best_degenerate_codon_aas)
+                or (
+                    best_degenerate_codon_aas is not None
+                    and num_aas < best_degenerate_codon_aas
+                )
                 or (
                     best_degenerate_codon_aas is not None
                     and best_degenerate_codon_expanded_codon_count is not None
                     and num_aas == best_degenerate_codon_aas
-                    and expanded_codon_count < best_degenerate_codon_expanded_codon_count
+                    and expanded_codon_count
+                    < best_degenerate_codon_expanded_codon_count
                 )
                 or (
                     best_degenerate_codon_aas is not None
                     and best_degenerate_codon_expanded_codon_count is not None
                     and best_degenerate_codon_frequency is not None
                     and num_aas == best_degenerate_codon_aas
-                    and expanded_codon_count == best_degenerate_codon_expanded_codon_count
+                    and expanded_codon_count
+                    == best_degenerate_codon_expanded_codon_count
                     and frequency > best_degenerate_codon_frequency
                 )
             ):

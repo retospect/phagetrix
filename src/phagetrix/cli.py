@@ -37,48 +37,39 @@ Citation: https://doi.org/10.5281/zenodo.7676572
 """
 
 
-def process_request(lines: List[str], company: str = "IDT", species: str = "e_coli") -> None:
+def process_request(
+    lines: List[str], company: str = "IDT", species: str = "e_coli"
+) -> None:
     """Process input lines and generate codon optimization results."""
     # Parse input using API
-    import tempfile
     import os
-    
+    import tempfile
+
     # Create temporary file for parsing
-    with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.phagetrix') as f:
+    with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".phagetrix") as f:
         for line in lines:
-            if not line.endswith('\n'):
-                line += '\n'
+            if not line.endswith("\n"):
+                line += "\n"
             f.write(line)
         temp_path = f.name
-    
+
     try:
         seq, variations, config = api.parse_phagetrix_file(temp_path)
     finally:
         os.unlink(temp_path)
 
-    # Get offset from config
-    offset = int(config.get('offset', 0))
-    
-    # Generate results using API
-    result = api.optimize_codons(
-        sequence=seq,
-        variations=variations,
-        company=company,
-        species=species,
-        offset=offset
-    )
-
     # Format and display output using existing formatter
-    from .core import DegenerateCodonGenerator
     import python_codon_tables as pct
-    
+
+    from .core import DegenerateCodonGenerator
+
     # Create generator for formatter compatibility
     codon_frequency = pct.get_codons_table(species)
     generator = DegenerateCodonGenerator(
         degenerate_bases=api.get_degenerate_codons(company),
-        codon_frequency=codon_frequency
+        codon_frequency=codon_frequency,
     )
-    
+
     formatter = OutputFormatter(avogadro)
     formatter.format_results(seq, variations, config, generator)
 
@@ -127,6 +118,7 @@ def main() -> None:
     # Validate species parameter using API (including aliases)
     available_species = api.get_available_species()
     from .constants import SPECIES_ALIASES
+
     available_aliases = list(SPECIES_ALIASES.keys())
     if args.species not in available_species and args.species not in available_aliases:
         raise ValueError(

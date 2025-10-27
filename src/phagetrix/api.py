@@ -4,11 +4,11 @@ High-level API for Phagetrix - Easy-to-use interface for library users.
 This module provides simple, convenient functions for common use cases.
 """
 
-from typing import Dict, List, Tuple, Union, Any
+from typing import Any, Dict, List, Tuple
 
 import python_codon_tables as pct
 
-from .constants import VALID_AMINO_ACIDS, degenerate, SPECIES_ALIASES
+from .constants import SPECIES_ALIASES, VALID_AMINO_ACIDS, degenerate
 from .core import DegenerateCodonGenerator
 from .parser import InputParser
 

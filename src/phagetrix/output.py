@@ -1,6 +1,6 @@
 """Output formatting for phagetrix results."""
 
-from typing import Dict, List, Tuple, Any
+from typing import Dict, List, Tuple
 
 from quantiphy import Quantity
 

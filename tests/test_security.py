@@ -3,7 +3,6 @@
 import pytest
 
 from phagetrix.cli import process_request
-from phagetrix import api
 
 
 def test_invalid_company_parameter():
@@ -71,7 +70,9 @@ def test_no_amino_acids_specified():
 
 def test_invalid_configuration_variable():
     """Test that invalid configuration variables are rejected."""
-    with pytest.raises(ValueError, match="Configuration variable 'invalid_var' not allowed"):
+    with pytest.raises(
+        ValueError, match="Configuration variable 'invalid_var' not allowed"
+    ):
         process_request(["ACDEF", "# invalid_var = 10"], "IDT")
 
 
