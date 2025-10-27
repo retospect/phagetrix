@@ -123,7 +123,9 @@ poetry run phagetrix --help
 ```
 
 ### Try Online
-Click the **"Open In Colab"** badge at the top to try Phagetrix interactively in your browser with comprehensive examples!
+[![Open in Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/retospect/phagetrix/blob/main/examples/phagetrix.ipynb)
+
+Try Phagetrix interactively in your browser with comprehensive examples!
 
 **Requirements:** Python 3.10 or higher
 
