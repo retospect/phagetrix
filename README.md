@@ -1,44 +1,63 @@
 # Phagetrix
 
-[![Open in Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/retospect/phagetrix/blob/main/examples/phagetrix.ipynb)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7676572.svg)](https://doi.org/10.5281/zenodo.7676572)
 [![PyPI version](https://badge.fury.io/py/phagetrix.svg)](https://badge.fury.io/py/phagetrix)
-[![Action Status](https://github.com/retospect/phagetrix/actions/workflows/check.yml/badge.svg)](https://github.com/retospect/phagetrix/actions/workflows/check.yml)
+[![Python](https://img.shields.io/pypi/pyversions/phagetrix.svg)](https://pypi.org/project/phagetrix/)
+[![License](https://img.shields.io/pypi/l/phagetrix.svg)](https://github.com/retospect/phagetrix/blob/main/LICENSE)
+[![CI](https://github.com/retospect/phagetrix/actions/workflows/check.yml/badge.svg)](https://github.com/retospect/phagetrix/actions/workflows/check.yml)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.7676572-blue)](https://doi.org/10.5281/zenodo.7676572)
 
-A codon optimizer for
-[phage display library](<https://bio.libretexts.org/Bookshelves/Biochemistry/Supplemental_Modules_(Biochemistry)/4._Biotechnology_2/4.3%3A_M13_Phage_Display_Libraries>)
-generation.
+**A powerful codon optimization tool for [phage display library](https://bio.libretexts.org/Bookshelves/Biochemistry/Supplemental_Modules_(Biochemistry)/4._Biotechnology_2/4.3%3A_M13_Phage_Display_Libraries) generation and protein engineering.**
 
-When making phage display libraries, it's easy to run out of permutations. 1
-liter of phage solution can hold about $10^{12}$ different sequences.
+Phagetrix helps researchers design optimal degenerate codon libraries for phage display, directed evolution, and synthetic biology applications. Maximize your library diversity while staying within experimental constraints.
 
-We can approximate how many combinations we generate with 
-$(nr\ of\ choices)^{(nr\ of\ positions)}$. 
-If we change the aminoacids to "any" aminoacid, we can change about 9 AA's: 
-$20^9 \\approx 10^{12}$ permutations.
+## Table of Contents
 
-If we use the degenerate codon capabilities of the manufactureres such as
-[IDT](<https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-that-you-use-(eg.-r-w-k-v-s)->)
-to the fullest, we can probably make combinations that are partially rational,
-and allow for 6 permutations in any postion.
+- [Key Features](#key-features)
+- [Use Cases](#use-cases)  
+- [The Library Diversity Problem](#the-library-diversity-problem)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Advanced Features](#advanced-features)
+- [Documentation & Support](#documentation--support)
+- [Citation](#citation)
+- [Related Tools](#related-tools)
+- [License](#license)
 
-That allows us to check out many more combinations that are likely to work:
-$6^{15} \\approx 10^{12}$, so about 15 variable AA's instead of 9.
+## Key Features
 
-This tool allows you to easily specify what AA permutations you want, in which
-position, and calculates the best sequence of degenerate codons.
+- **Intelligent codon optimization** - Automatically selects the best degenerate codons for your amino acid requirements
+- **Library statistics** - Calculate theoretical diversity and material requirements  
+- **Multi-vendor support** - Compatible with IDT, Eurofins, and NEB degenerate codon sets
+- **Species-specific** - Supports codon usage tables for multiple organisms
+- **Easy to use** - Simple file format and command-line interface
+- **Python integration** - Use as a library in your bioinformatics pipelines
 
-## Example
+## Use Cases
 
-Phagetrix is a tool to generate phage display libraries. You probably have an
-idea what AA's you want to replace, and what you want to replace them with. The
-sequence companies have a reasonable number of The file format has the AA
-sequence on the first line. Each following line is the AA to be changed, the
-digits indicating its position, and the AA options that should be generated for
-that position. The AA options are concatenated together with no spaces.
-Phagetrix will generate the best degenerate codon for each position.
+- **Phage display library design** - Optimize antibody/peptide libraries
+- **Directed evolution** - Design mutagenesis libraries for protein engineering  
+- **Synthetic biology** - Create diverse protein variants for screening
+- **Molecular biology research** - Plan degenerate PCR experiments
 
-Example:
+## The Library Diversity Problem
+
+When creating phage display libraries, you're limited by experimental constraints:
+- **1 liter of phage solution** ≈ **10¹² different sequences**
+- **Random mutagenesis**: 20⁹ ≈ 10¹² permutations (only ~9 variable positions)
+- **Smart degenerate codons**: 6¹⁵ ≈ 10¹² permutations (**~15 variable positions!**)
+
+**Phagetrix maximizes your library diversity** by intelligently selecting degenerate codons from manufacturers like [IDT](https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-that-you-use-(eg.-r-w-k-v-s-)), Eurofins, and NEB, allowing you to target more positions with rational amino acid choices.
+
+## Quick Start
+
+### Input Format
+
+Create a simple text file specifying your target sequence and desired variations:
+
+- **Line 1**: Your base amino acid sequence  
+- **Following lines**: `[Original AA][Position][Allowed AAs]`
+
+### Example
 
 ```txt
 VLAYMVAQVQ
@@ -47,15 +66,20 @@ Y4YFW
 A7AVIL
 ```
 
-1. The first line is the sequence you want to alter.
-1. The P in position 3 should be either a P, F, Y or an A
-1. The Y in position 4 should be either a Y, P, F, or an E
-1. The A in position 7 should be either an A, V, I, L or an M
+**Explanation:**
+- Position 3: A → A,G,V,I,L (hydrophobic alternatives)
+- Position 4: Y → Y,F,W (aromatic alternatives)  
+- Position 7: A → A,V,I,L (hydrophobic alternatives)
 
-Output:
+### Run Phagetrix
+
+```bash
+phagetrix input.txt
+```
+
+### Output
 
 ```txt
-phagetrix ./sample.phagetrix
    1   2   3   4   5   6   7   8   9  10
    V   L   A   Y   M   V   A   Q   V   Q
  GTT CTT VBA TDK ATG GTT VYA CAG GTT CAG   degenerate codons
@@ -67,49 +91,89 @@ phagetrix ./sample.phagetrix
           1A  1L          --
           --  1C          1T
           2R  1*          1P
-          1T
-          1P
 
-GTTCTTVBATDKATGGTTVYACAGGTTCAG
+Final sequence: GTTCTTVBATDKATGGTTVYACAGGTTCAG
 ```
 
-The lines of the output show:
+**Output includes:**
+- **Degenerate codons** (VBA, TDK, etc.) optimized for your requirements
+- **Efficiency percentages** showing on-target vs off-target products
+- **Amino acid breakdown** for each position
+- **Ready-to-order sequence** for DNA synthesis
 
-1. number of the AA on the first line
-1. original AA on the second line
-1. codon made from degenerate basepairs
-1. the percentage of product for this codon that matches what the user specified
-1. how many codons code for which aminoacid. The AA below the `--` line are
-   off-target codons that were not requested.
+## Installation
 
-- the last line shows the codons made from degenerate basepairs again, in a
-  format that can easily be copied and pasted.
+### Using pip (recommended)
+```bash
+pip install phagetrix
+```
 
-By default this uses the degenerate codons from
-[IDT](<https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-that-you-use-(eg.-r-w-k-v-s)->).
+### Using Poetry (for development)
+```bash
+git clone https://github.com/retospect/phagetrix.git
+cd phagetrix
+poetry install
+poetry run phagetrix --help
+```
 
-## Additional features
+### Try Online
+[![Open in Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/retospect/phagetrix/blob/main/examples/phagetrix.ipynb)
 
-Adding a comment of this form to your input file (see the pal.phagetrix file in
-the example directory)
+**Requirements:** Python 3.8.1 or higher
+
+## Advanced Features
+
+### Custom Numbering
+Add position offsets for working with longer sequences:
 
 ```txt
 # offset = 20
+VLAYMVAQVQ
+A23AGVIL  # Position 23 in the full protein
 ```
 
-allow the setting of variables - in this case, the first aminoacid will be
-numbered 21. This is nice for long sequences where "something in the middle"
-needs to be edited.
+### Multiple Vendors
+Choose your preferred DNA synthesis company:
 
-# Try it
+```bash
+phagetrix --company IDT input.txt      # Default
+phagetrix --company Eurofins input.txt
+phagetrix --company NEB input.txt
+```
 
-- [![Open in Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/retospect/phagetrix/blob/main/examples/phagetrix.ipynb)
-- Install it on your machine `pip install phagetrix` to get the `phagetrix`
-  command line tool. Requires python3.
+### Species-Specific Codon Usage
+Optimize for different organisms:
 
-# Related projects
+```bash
+phagetrix --species e_coli input.txt           # Default
+phagetrix --species h_sapiens_9606 input.txt  # Human
+phagetrix --species s_cerevisiae_4932 input.txt  # Yeast
+```
 
-Other projects that are potentially interesting, if you are into this sort of
-stuff.
+## Documentation & Support
 
-- [Make primers for highly variable genomes](https://github.com/jonas-fuchs/varVAMP)
+- **[Contributing Guidelines](CONTRIBUTING.md)** - Help improve Phagetrix
+- **[Changelog](CHANGELOG.md)** - See what's new
+- **[Examples](examples/)** - More usage examples
+
+## Citation
+
+If you use Phagetrix in your research, please cite:
+
+```bibtex
+@software{phagetrix,
+  title = {Phagetrix: Codon optimization for phage display libraries},
+  author = {Stamm, Reto},
+  doi = {10.5281/zenodo.7676572},
+  url = {https://github.com/retospect/phagetrix}
+}
+```
+
+## Related Tools
+
+- **[varVAMP](https://github.com/jonas-fuchs/varVAMP)** - Primers for highly variable genomes
+- **[Biopython](https://biopython.org/)** - Python bioinformatics toolkit
+
+## License
+
+This project is licensed under the GPL-3.0-or-later License - see the [LICENSE](LICENSE) file for details.

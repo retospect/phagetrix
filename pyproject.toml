@@ -1,27 +1,57 @@
 [build-system]
-requires = ["poetry-core>=1.1.0"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry]
+[project]
 name = "phagetrix"
-authors = ["Reto Stamm"]
-description = "Optimizer for degenerate codon use in phage library generation"
-readme = "README.md"
 version = "0.2.3"
-keywords = ["example"]
-license = "GPL-3"
-classifiers = [ "Programming Language :: Python :: 3", 
-                "Topic :: Scientific/Engineering :: Bio-Informatics",
-                "Topic :: Software Development :: Libraries :: Python Modules"]
-homepage = "https://github.com/retospect/phagetrix"
-repository = "https://github.com/retospect/phagetrix"
+description = "Optimizer for degenerate codon use in phage library generation"
+authors = [{name = "Reto Stamm", email = "reto@retospect.ch"}]
+readme = "README.md"
+license = "GPL-3.0-or-later"
+keywords = ["bioinformatics", "phage-display", "codon-optimization", "molecular-biology"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.8.1"
+dependencies = [
+    "python-codon-tables>=0.1.12,<1.0.0",
+    "quantiphy>=2.19,<3.0.0",
+]
 
-[tool.poetry.dependencies]
-python_codon_tables = "*"
-quantiphy = "*"
+[project.urls]
+Homepage = "https://github.com/retospect/phagetrix"
+Repository = "https://github.com/retospect/phagetrix"
+Documentation = "https://github.com/retospect/phagetrix"
+"Bug Tracker" = "https://github.com/retospect/phagetrix/issues"
 
-[tool.poetry.scripts]
-phagetrix= "phagetrix.exec:main"
+[project.scripts]
+phagetrix = "phagetrix.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "mypy>=1.5.0",
+    "pre-commit>=3.4.0",
+    "tox>=4.11.0",
+]
+
+[tool.poetry]
+packages = [{include = "phagetrix", from = "src"}]
 
 [tool.bumpver]
 current_version = "0.2.3"
@@ -34,5 +64,91 @@ push = true
 [tool.bumpver.file_patterns]
 "pyproject.toml" = ['current_version = "{version}"', 'version = "{version}"']
 "src/phagetrix/__init__.py" = ["{version}"]
-"src/phagetrix/exec.py" = ["{version}"]
+"src/phagetrix/cli.py" = ["{version}"]
 
+# Black configuration
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# isort configuration
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["phagetrix"]
+
+# pytest configuration
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=phagetrix",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+# mypy configuration
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "python_codon_tables.*",
+    "quantiphy.*",
+]
+ignore_missing_imports = true
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]

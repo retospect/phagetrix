@@ -1,55 +1,10 @@
 # Phagetrix library
 
 from collections import defaultdict
+
 import python_codon_tables as pct
 
-# Source: https://www.idtdna.com/pages/support/faqs/what-are-the-base-degeneracy-codes-that-you-use-(eg.-r-w-k-v-s)-
-# Retrieved 2023-FEB-23
-degenerate = {
-    "IDT": {
-        "R": "AG",
-        "Y": "CT",
-        "M": "AC",
-        "K": "GT",
-        "S": "CG",
-        "W": "AT",
-        "H": "ACT",
-        "B": "CGT",
-        "V": "ACG",
-        "D": "AGT",
-        "N": "ACGT",
-    },
-    # Source: https://www.eurofinsgenomics..com/en/products/dnarna-sythesis/degenerate-bases
-    # Retrieved 2023-FEB-24
-    "Eurofins": {
-        "R": "AG",
-        "Y": "CT",
-        "M": "AC",
-        "K": "GT",
-        "S": "CG",
-        "W": "AT",
-        "B": "CGT",
-        "D": "AGT",
-        "H": "ACT",
-        "V": "ACG",
-        "N": "ACGT",
-    },
-    # Source: https://www.neb.com/tools-and-resources/usage-guidelines/single-letter-codes
-    # Retrieved 2023-FEB-24
-    "NEB": {
-        "B": "CGT",
-        "D": "AGT",
-        "H": "ACT",
-        "K": "GT",
-        "M": "AC",
-        "N": "ACGT",
-        "R": "AG",
-        "S": "CG",
-        "V": "ACG",
-        "W": "AT",
-        "Y": "CT",
-    },
-}
+from .constants import degenerate
 
 # TODO: look up UIPAC code for degenerate bases and add it here:
 
@@ -135,8 +90,12 @@ class DegenerateCodonGenerator:
         for aa in amino_acids:
             degenerate_codons = degenerate_codons & self.amino_acid_dict[aa]
 
-        # there's an NNN combo that should alwayws work
-        assert degenerate_codons != set()
+        # there's an NNN combo that should always work
+        if not degenerate_codons:
+            raise ValueError(
+                f"No degenerate codon found for amino acids: {amino_acids}. "
+                "This should not happen as NNN should always work."
+            )
 
         # Find the best degenerate codon
         best_degenerate_codon = None

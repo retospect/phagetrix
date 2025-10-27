@@ -1,4 +1,4 @@
-from phagetrix.trix import DegenerateCodonGenerator
+from phagetrix.core import DegenerateCodonGenerator
 
 
 def test_single_aminoacid_codon():

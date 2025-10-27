@@ -1,10 +1,55 @@
-build
-dist
-***.egg-info
-***__pycache__
-.tox
+# Build artifacts
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Testing
+.tox/
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+.hypothesis/
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Poetry
 poetry.lock
-***.pdf
-***.txt
+
+# Documentation
+docs/_build/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Project specific
+*.pdf
+*.txt
 package-lock.json
 package.json
