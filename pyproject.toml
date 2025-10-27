@@ -9,9 +9,20 @@ description = "Optimizer for degenerate codon use in phage library generation"
 authors = [{name = "Reto Stamm", email = "reto@retospect.ch"}]
 readme = "README.md"
 license = "GPL-3.0-or-later"
-keywords = ["bioinformatics", "phage-display", "codon-optimization", "molecular-biology"]
+keywords = [
+    "bioinformatics", 
+    "phage-display", 
+    "codon-optimization", 
+    "molecular-biology",
+    "protein-engineering",
+    "synthetic-biology", 
+    "directed-evolution",
+    "dna-synthesis",
+    "degenerate-codons",
+    "library-design"
+]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Science/Research",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
