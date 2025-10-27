@@ -33,7 +33,7 @@ from .core import DegenerateCodonGenerator
 from .output import OutputFormatter
 from .parser import InputParser
 
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 
 # Public API - what users see with "from phagetrix import *"
 __all__ = [
