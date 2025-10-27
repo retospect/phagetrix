@@ -60,7 +60,6 @@ jobs:
         poetry run pytest --cov=phagetrix --cov-report=xml
         poetry run mypy src
         poetry run bandit -r src/ -f json || true
-        poetry run safety scan || true
 
     - name: Bump version
       id: bump
