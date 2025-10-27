@@ -5,7 +5,7 @@ Thank you for your interest in contributing to Phagetrix! This document provides
 ## Development Setup
 
 ### Prerequisites
-- Python 3.8.1 or higher
+- Python 3.10 or higher
 - [Poetry](https://python-poetry.org/docs/#installation) for dependency management
 
 ### Getting Started

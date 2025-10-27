@@ -45,7 +45,7 @@ jobs:
         virtualenvs-in-project: true
 
     - name: Install dependencies
-      run: poetry install --extras dev
+      run: poetry install --with dev
 
     - name: Configure git
       run: |
@@ -114,7 +114,7 @@ jobs:
         virtualenvs-in-project: true
 
     - name: Install dependencies
-      run: poetry install --extras dev
+      run: poetry install --with dev
 
     - name: Final test run
       run: |

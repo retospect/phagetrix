@@ -22,7 +22,7 @@ The `GITHUB_TOKEN` is automatically provided by GitHub Actions - no setup requir
 - **Purpose**: Comprehensive testing across multiple OS and Python versions
 - **Features**:
   - Tests on Ubuntu, macOS, Windows
-  - Python versions: 3.8, 3.9, 3.10, 3.11, 3.12
+  - Python versions: 3.10, 3.11, 3.12
   - Code coverage reporting
   - Linting (Black, isort, flake8, mypy)
   - Security scanning (Bandit, Safety)
