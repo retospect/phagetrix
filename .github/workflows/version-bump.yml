@@ -21,6 +21,9 @@ on:
 jobs:
   version-bump:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     outputs:
       new_version: ${{ steps.bump.outputs.new_version }}
       should_release: ${{ steps.bump.outputs.should_release }}
@@ -93,6 +96,9 @@ jobs:
     needs: version-bump
     if: needs.version-bump.outputs.should_release == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     
     steps:
     - name: Checkout code
