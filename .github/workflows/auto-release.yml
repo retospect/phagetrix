@@ -79,7 +79,7 @@ jobs:
         poetry run pytest --cov=phagetrix --cov-report=xml --cov-fail-under=80
         poetry run mypy src
         poetry run bandit -r src/ -f json || true
-        poetry run safety check || true
+        poetry run safety scan || true
         echo "✅ All tests passed!"
 
     - name: Build package
