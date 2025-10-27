@@ -1,7 +1,7 @@
 # Phagetrix
 
 [![PyPI version](https://badge.fury.io/py/phagetrix.svg)](https://badge.fury.io/py/phagetrix)
-[![Python 3.10-3.13](https://img.shields.io/badge/python-3.10%20|%203.11%20|%203.12%20|%203.13-blue)](https://pypi.org/project/phagetrix/)
+[![Python](https://img.shields.io/pypi/pyversions/phagetrix.svg)](https://pypi.org/project/phagetrix/)
 [![License](https://img.shields.io/pypi/l/phagetrix.svg)](https://github.com/retospect/phagetrix/blob/main/LICENSE)
 [![CI](https://github.com/retospect/phagetrix/actions/workflows/check.yml/badge.svg)](https://github.com/retospect/phagetrix/actions/workflows/check.yml)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.7676572-blue)](https://doi.org/10.5281/zenodo.7676572)
