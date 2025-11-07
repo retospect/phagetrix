@@ -141,7 +141,7 @@ def example_6_error_handling():
     for description, sequence, variations, *args in test_cases:
         try:
             company = args[0] if args else "IDT"
-            result = phagetrix.optimize_codons(sequence, variations, company=company)
+            phagetrix.optimize_codons(sequence, variations, company=company)
             print(f"✓ {description}: Success")
         except ValueError as e:
             print(f"✗ {description}: {e}")
