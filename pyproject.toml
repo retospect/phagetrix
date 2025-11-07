@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "phagetrix"
-version = "1.0.5"
+version = "1.0.6"
 description = "Optimizer for degenerate codon use in phage library generation"
 authors = [{name = "Reto Stamm", email = "reto@retospect.ch"}]
 readme = "README.md"
