@@ -114,12 +114,12 @@ Final sequence: GTTCTTVBATDKATGGTTVYACAGGTTCAG
 pip install phagetrix
 ```
 
-### Using Poetry (for development)
+### Development (using uv)
 ```bash
 git clone https://github.com/retospect/phagetrix.git
 cd phagetrix
-poetry install
-poetry run phagetrix --help
+uv sync
+uv run phagetrix --help
 ```
 
 ### Try Online
@@ -127,7 +127,7 @@ poetry run phagetrix --help
 
 Try Phagetrix interactively in your browser with comprehensive examples!
 
-**Requirements:** Python 3.10 or higher
+**Requirements:** Python 3.11 or higher
 
 ## Library Usage
 
@@ -232,6 +232,10 @@ If you use Phagetrix in your research, please cite:
 ## Acknowledgments
 
 This package has been enhanced and maintained with assistance from **[Windsurf](https://codeium.com/windsurf)**, an AI-powered development environment that helped implement modern development practices, comprehensive testing, type safety, security scanning, and automated CI/CD workflows.
+
+## Security
+
+See [SECURITY.md](SECURITY.md) for vulnerability reporting and our security practices.
 
 ## License
 

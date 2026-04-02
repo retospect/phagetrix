@@ -1,7 +1,5 @@
 """Output formatting for phagetrix results."""
 
-from typing import Dict, List, Tuple
-
 from quantiphy import Quantity
 
 from .core import DegenerateCodonGenerator
@@ -16,8 +14,8 @@ class OutputFormatter:
     def format_results(
         self,
         seq: str,
-        variations: Dict[int, str],
-        config: Dict[str, float],
+        variations: dict[int, str],
+        config: dict[str, float],
         generator: DegenerateCodonGenerator,
     ) -> None:
         """
@@ -32,10 +30,10 @@ class OutputFormatter:
         offset = int(config["offset"])
 
         # Print header with position numbers
-        print("".join(["%4d" % (int(i) + offset) for i in range(1, len(seq) + 1)]))
+        print("".join([f"{int(i) + offset:4d}" for i in range(1, len(seq) + 1)]))
 
         # Print the original amino acid sequence
-        print("".join(["%4s" % aa for aa in seq]))
+        print("".join([f"{aa:>4s}" for aa in seq]))
 
         # Generate and analyze codons
         codons, target_list, target_score = self._generate_codons(
@@ -43,7 +41,7 @@ class OutputFormatter:
         )
 
         # Print the degenerate codons
-        print("".join(["%4s" % codon for codon in codons]), "  degenerate codons")
+        print("".join([f"{codon:>4s}" for codon in codons]), "  degenerate codons")
 
         # Print efficiency percentages
         self._print_efficiency(seq, target_score)
@@ -55,8 +53,8 @@ class OutputFormatter:
         self._print_statistics(target_list, codons)
 
     def _generate_codons(
-        self, seq: str, variations: Dict[int, str], generator: DegenerateCodonGenerator
-    ) -> Tuple[List[str], List[List[Tuple[int, str]]], List[float]]:
+        self, seq: str, variations: dict[int, str], generator: DegenerateCodonGenerator
+    ) -> tuple[list[str], list[list[tuple[int, str]]], list[float]]:
         """Generate codons and analyze their efficiency."""
         codons = []
         target_list = []
@@ -98,17 +96,17 @@ class OutputFormatter:
 
         return codons, target_list, target_score
 
-    def _print_efficiency(self, seq: str, target_score: List[float]) -> None:
+    def _print_efficiency(self, seq: str, target_score: list[float]) -> None:
         """Print the efficiency percentages."""
         for i in range(len(seq)):
             if target_score[i] == 1:
                 print("    ", end="")
             else:
-                print("  {:2d}".format(round(100 * target_score[i])), end="")
+                print(f"  {round(100 * target_score[i]):2d}", end="")
         print("   percentage on target")
 
     def _print_amino_acid_breakdown(
-        self, target_list: List[List[Tuple[int, str]]]
+        self, target_list: list[list[tuple[int, str]]]
     ) -> None:
         """Print the amino acid breakdown for each position."""
         # Find the longest list in target_list
@@ -120,13 +118,13 @@ class OutputFormatter:
                     if j[i][0] == 0:
                         print("  --", end="")
                     else:
-                        print(" %2s" % j[i][0], "%1s" % j[i][1], end="", sep="")
+                        print(f" {j[i][0]:>2}{j[i][1]:<1}", end="")
                 else:
                     print("    ", end="")
             print()
 
     def _print_statistics(
-        self, target_list: List[List[Tuple[int, str]]], codons: List[str]
+        self, target_list: list[list[tuple[int, str]]], codons: list[str]
     ) -> None:
         """Print probability and material statistics."""
         probs_out_of = []

@@ -62,11 +62,10 @@ def main():
     print("\nNext steps:")
     print("1. Review changes: git diff")
     print(
-        "2. Commit changes: git add -A && git commit -m 'Bump version to {}'".format(
-            new_version
-        )
+        "2. Commit changes: git add -A && "
+        f"git commit -m 'Bump version to {new_version}'"
     )
-    print("3. Create tag: git tag v{}".format(new_version))
+    print(f"3. Create tag: git tag v{new_version}")
     print("4. Push: git push && git push --tags")
     print("5. Create GitHub release using the tag")
 

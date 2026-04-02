@@ -91,9 +91,8 @@ def example_4_library_statistics():
     print(f"Theoretical diversity: {stats['diversity']:,} variants")
     print(f"Single probability:   {stats['probability_single']:.2e}")
     print(f"Material needed:      {stats['material_amount']}")
-    print(
-        f"Average efficiency:   {sum(result['efficiency'])/len(result['efficiency']):.1f}%"
-    )
+    avg = sum(result["efficiency"]) / len(result["efficiency"])
+    print(f"Average efficiency:   {avg:.1f}%")
     print()
 
 

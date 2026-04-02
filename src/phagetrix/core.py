@@ -1,7 +1,7 @@
 # Phagetrix library
 
 from collections import defaultdict
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
 
 import python_codon_tables as pct
 
@@ -15,11 +15,17 @@ class DegenerateCodonGenerator:
     # Can find the best degenerate codon for a given list of aminoacids
     def __init__(
         self,
-        degenerate_bases: Dict[str, str] = degenerate["IDT"],
-        codon_frequency: Dict[str, List[str]] = pct.get_codons_table("e_coli_316407"),
+        degenerate_bases: dict[str, str] | None = None,
+        codon_frequency: dict[str, list[str]] | None = None,
     ) -> None:
-        self.degenerate_bases = degenerate_bases
-        self.codon_frequency = codon_frequency
+        if degenerate_bases is not None:
+            self.degenerate_bases = degenerate_bases
+        else:
+            self.degenerate_bases = degenerate["IDT"]
+        if codon_frequency is not None:
+            self.codon_frequency = codon_frequency
+        else:
+            self.codon_frequency = pct.get_codons_table("e_coli_316407")
 
         # Add ATGC to the degenerate dictionary
         for base in "ATGC":
@@ -33,12 +39,12 @@ class DegenerateCodonGenerator:
         #     many times it codes for each in a map
         #   - expanded_codon_count: The number of permutations
         #     of normal codons that it can make
-        self.degenerate_codons: Dict[str, Dict[str, Any]] = defaultdict(
+        self.degenerate_codons: dict[str, dict[str, Any]] = defaultdict(
             lambda: {"aas": defaultdict(int), "expanded_codon_count": 0}
         )
 
         # Reverse map the aminoacids from the codon frequency table
-        self.codon_to_aa: Dict[str, str] = {}
+        self.codon_to_aa: dict[str, str] = {}
 
         for aa, codons in self.codon_frequency.items():
             for codon in codons:
@@ -46,10 +52,10 @@ class DegenerateCodonGenerator:
 
         # Create a dictionary of all the amino acids and a list of all their
         # associated degenerate codons
-        temp_amino_acid_dict: Dict[str, List[str]] = defaultdict(list)
-        for base1 in self.degenerate_bases.keys():
-            for base2 in self.degenerate_bases.keys():
-                for base3 in self.degenerate_bases.keys():
+        temp_amino_acid_dict: dict[str, list[str]] = defaultdict(list)
+        for base1 in self.degenerate_bases:
+            for base2 in self.degenerate_bases:
+                for base3 in self.degenerate_bases:
                     degenerate_codon = base1 + base2 + base3
                     for normalCodon in self.get_normal_codons(degenerate_codon):
                         aa = self.codon_to_aa[normalCodon]
@@ -61,11 +67,11 @@ class DegenerateCodonGenerator:
                         ] += 1
 
         # Convert the amioacid list codons to a set
-        self.amino_acid_dict: Dict[str, Set[str]] = {}
-        for aa in temp_amino_acid_dict.keys():
+        self.amino_acid_dict: dict[str, set[str]] = {}
+        for aa in temp_amino_acid_dict:
             self.amino_acid_dict[aa] = set(temp_amino_acid_dict[aa])
 
-    def get_normal_codons(self, degenerate_codon: str) -> List[str]:
+    def get_normal_codons(self, degenerate_codon: str) -> list[str]:
         # Returns a list of all the normal codons that can be made
         # from a degenerate codon
         normal_codons = []
@@ -100,10 +106,10 @@ class DegenerateCodonGenerator:
             )
 
         # Find the best degenerate codon
-        best_degenerate_codon: Optional[str] = None
-        best_degenerate_codon_aas: Optional[int] = None
-        best_degenerate_codon_expanded_codon_count: Optional[int] = None
-        best_degenerate_codon_frequency: Optional[float] = None
+        best_degenerate_codon: str | None = None
+        best_degenerate_codon_aas: int | None = None
+        best_degenerate_codon_expanded_codon_count: int | None = None
+        best_degenerate_codon_frequency: float | None = None
         for degenerate_codon in degenerate_codons:
             # Get the number of amino acids that the degenerate codon codes for
             aas = self.degenerate_codons[degenerate_codon]["aas"]

@@ -1,7 +1,6 @@
 """Input parsing and validation for phagetrix."""
 
 import re
-from typing import Dict, List, Tuple
 
 from .constants import VALID_AMINO_ACIDS
 
@@ -12,7 +11,7 @@ class InputParser:
     def __init__(self) -> None:
         self.valid_aas = VALID_AMINO_ACIDS
 
-    def parse(self, lines: List[str]) -> Tuple[str, Dict[int, str], Dict[str, float]]:
+    def parse(self, lines: list[str]) -> tuple[str, dict[int, str], dict[str, float]]:
         """
         Parse input lines into sequence, variations, and configuration.
 
@@ -39,12 +38,12 @@ class InputParser:
         for i, aa in enumerate(seq):
             if aa not in self.valid_aas:
                 raise ValueError(
-                    f"Invalid amino acid '{aa}' at position {i+1} in sequence"
+                    f"Invalid amino acid '{aa}' at position {i + 1} in sequence"
                 )
 
         # Parse variations and configuration
-        variations: Dict[int, str] = {}
-        config: Dict[str, float] = {"offset": 0.0}
+        variations: dict[int, str] = {}
+        config: dict[str, float] = {"offset": 0.0}
 
         for line in lines[1:]:
             line = line.strip()
@@ -58,7 +57,7 @@ class InputParser:
 
         return seq, variations, config
 
-    def _parse_config_line(self, line: str, config: Dict[str, float]) -> None:
+    def _parse_config_line(self, line: str, config: dict[str, float]) -> None:
         """Parse a configuration line starting with #."""
         if re.match(r"#\s*\w+\s*=\s*\d+\.?\d*", line):
             # Get the name of the variable with validation
@@ -71,7 +70,8 @@ class InputParser:
             allowed_vars = {"offset"}
             if var_name not in allowed_vars:
                 raise ValueError(
-                    f"Configuration variable '{var_name}' not allowed. Allowed: {allowed_vars}"
+                    f"Configuration variable '{var_name}' not allowed. "
+                    f"Allowed: {allowed_vars}"
                 )
 
             # Get the value of the variable with validation
@@ -83,7 +83,8 @@ class InputParser:
             # Validate numeric ranges for security
             if var_name == "offset" and (var_value < -1000000 or var_value > 1000000):
                 raise ValueError(
-                    f"Offset value {var_value} out of reasonable range (-1000000 to 1000000)"
+                    f"Offset value {var_value} out of reasonable range "
+                    f"(-1000000 to 1000000)"
                 )
 
             config[var_name] = var_value
@@ -92,7 +93,7 @@ class InputParser:
             raise ValueError(f"Invalid configuration line: {line}")
 
     def _parse_variation_line(
-        self, line: str, seq: str, variations: Dict[int, str]
+        self, line: str, seq: str, variations: dict[int, str]
     ) -> None:
         """Parse a variation line specifying amino acid changes."""
         # Validate line has content
@@ -110,7 +111,8 @@ class InputParser:
         # Validate position is within sequence bounds
         if position < 1 or position > len(seq):
             raise ValueError(
-                f"Position {position} is out of bounds for sequence of length {len(seq)}"
+                f"Position {position} is out of bounds "
+                f"for sequence of length {len(seq)}"
             )
 
         # Get the list of amino acids to be used for the degenerate codon
@@ -123,7 +125,8 @@ class InputParser:
         # Ensure that the amino acid in the sequence matches the one in the line
         if seq[position - 1] != original_aa:
             raise ValueError(
-                f"Amino acid in sequence at position {position} is {seq[position - 1]}, not {original_aa}"
+                f"Amino acid in sequence at position {position} "
+                f"is {seq[position - 1]}, not {original_aa}"
             )
 
         # Check that all the amino acids in the list are valid

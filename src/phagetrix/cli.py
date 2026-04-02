@@ -1,7 +1,6 @@
 #! python3
 
 import argparse
-from typing import List
 
 from quantiphy import Quantity
 
@@ -38,7 +37,7 @@ Citation: https://doi.org/10.5281/zenodo.7676572
 
 
 def process_request(
-    lines: List[str], company: str = "IDT", species: str = "e_coli"
+    lines: list[str], company: str = "IDT", species: str = "e_coli"
 ) -> None:
     """Process input lines and generate codon optimization results."""
     # Parse input using API

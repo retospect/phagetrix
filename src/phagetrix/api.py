@@ -4,7 +4,7 @@ High-level API for Phagetrix - Easy-to-use interface for library users.
 This module provides simple, convenient functions for common use cases.
 """
 
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import python_codon_tables as pct
 
@@ -20,11 +20,11 @@ def _resolve_species_alias(species: str) -> str:
 
 def optimize_codons(
     sequence: str,
-    variations: Dict[int, str],
+    variations: dict[int, str],
     company: str = "IDT",
     species: str = "e_coli",
     offset: int = 0,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
     Optimize degenerate codons for a protein sequence.
 
@@ -64,7 +64,7 @@ def optimize_codons(
     # Validate sequence
     for i, aa in enumerate(sequence):
         if aa not in VALID_AMINO_ACIDS:
-            raise ValueError(f"Invalid amino acid '{aa}' at position {i+1}")
+            raise ValueError(f"Invalid amino acid '{aa}' at position {i + 1}")
 
     # Validate variations
     for pos, aas in variations.items():
@@ -81,7 +81,7 @@ def optimize_codons(
     try:
         codon_frequency = pct.get_codons_table(resolved_species)
     except Exception as e:
-        raise ValueError(f"Unknown species '{species}': {e}")
+        raise ValueError(f"Unknown species '{species}': {e}") from e
 
     # Generate optimized codons
     generator = DegenerateCodonGenerator(
@@ -121,7 +121,7 @@ def optimize_codons(
 
 def parse_phagetrix_file(
     file_path: str,
-) -> Tuple[str, Dict[int, str], Dict[str, float]]:
+) -> tuple[str, dict[int, str], dict[str, float]]:
     """
     Parse a Phagetrix input file.
 
@@ -136,14 +136,14 @@ def parse_phagetrix_file(
         >>> print(f"Sequence: {seq}")
         >>> print(f"Variations: {vars}")
     """
-    with open(file_path, "r") as f:
+    with open(file_path) as f:
         lines = f.readlines()
 
     parser = InputParser()
     return parser.parse(lines)
 
 
-def get_available_companies() -> List[str]:
+def get_available_companies() -> list[str]:
     """
     Get list of supported DNA synthesis companies.
 
@@ -158,7 +158,7 @@ def get_available_companies() -> List[str]:
     return list(degenerate.keys())
 
 
-def get_available_species() -> List[str]:
+def get_available_species() -> list[str]:
     """
     Get list of available species for codon optimization.
 
@@ -173,7 +173,7 @@ def get_available_species() -> List[str]:
     return list(pct.available_codon_tables_names)
 
 
-def get_available_species_with_aliases() -> List[str]:
+def get_available_species_with_aliases() -> list[str]:
     """
     Get list of available species including convenient aliases.
 
@@ -190,7 +190,7 @@ def get_available_species_with_aliases() -> List[str]:
     return sorted(set(species_list + aliases))
 
 
-def get_degenerate_codons(company: str = "IDT") -> Dict[str, str]:
+def get_degenerate_codons(company: str = "IDT") -> dict[str, str]:
     """
     Get degenerate codon mappings for a company.
 
@@ -213,8 +213,8 @@ def get_degenerate_codons(company: str = "IDT") -> Dict[str, str]:
 
 
 def calculate_library_stats(
-    sequence: str, variations: Dict[int, str], company: str = "IDT"
-) -> Dict[str, Any]:
+    sequence: str, variations: dict[int, str], company: str = "IDT"
+) -> dict[str, Any]:
     """
     Calculate theoretical statistics for a degenerate library.
 
