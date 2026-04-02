@@ -57,6 +57,7 @@ dev = [
 
 [tool.ruff]
 target-version = "py311"
+extend-exclude = ["examples", "scripts"]
 line-length = 88
 
 [tool.ruff.lint]
